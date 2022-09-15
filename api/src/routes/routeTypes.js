@@ -8,7 +8,7 @@ const router = Router();
 /* TRAER TODOS LOS TIPOS DE POKEMONS 'https://pokeapi.co/api/v2/type' */
 const getApiTypes = async () => {
     try {
-        let types = Types.findAll();
+        let types = await Types.findAll();
         if (!types.length) {
             const api = await axios(`https://pokeapi.co/api/v2/type`).then(e => e.data.results);
             let allTypes = api.map(e => ({name: e.name}));

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const axios = require('axios');
+const { Pokemons } = require('../db')
 
 const router = Router();
 
@@ -80,6 +81,15 @@ const getApiPokemonByName = async (name) => {
     CONTROLLERS --> Es el intermediario entre nuestras rutas y nuestra base de datos
 */
 
+const getPokemonsByIdDb = async (id) => {
+    try {
+        const pokemonDb = await Pokemons.findByPk(id);
+        return pokemonDb;
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
 
 
 
@@ -96,16 +106,17 @@ const getApiPokemonByName = async (name) => {
 
 router.get('/', async (req, res, next) => {
     const { name } = req.query;
+    let result;
     if (name) {
         try {
-            const result = await getApiPokemonByName(name);
+            result = await getApiPokemonByName(name);
             res.json(result)
         } catch (err) {
             next(err);
         }
     } else {
         try {
-            const result = await getApiPokemons();
+            result = await getApiPokemons();
             res.json(result);
         } catch (err) {
             next(err);
@@ -114,11 +125,17 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/:id', async (req, res, next) => {
-    /* El ID puede venir por {body, params, query} */
+    /* {params = :id || query = ?id=1 } */
     try {
         const { id } = req.params;
-        const result = await getApiPokemonById(id);
-        res.json(result)
+        let result;
+        if (id.length > 10) {
+            result = await getPokemonsByIdDb(id);
+            res.json(result);
+        } else {
+            result = await getApiPokemonById(id);
+            res.json(result);
+        }
     } catch (err) {
         next(err);
     }
@@ -126,7 +143,13 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        
+        const { name, attack, speed } = req.body;
+        if (name && attack && speed) {
+            const pokemon = await Pokemons.create({name, attack, speed})
+            res.json(pokemon)
+        } else {
+            res.status(200).send('No se recibieron todos los parametros')
+        }
     } catch (err) {
         next(err);
     }
