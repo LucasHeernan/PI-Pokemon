@@ -74,7 +74,11 @@ const getApiPokemonByName = async (name) => {
 
 
 
-
+/* 
+    MODELS --> Se comunica con la base de datos
+    ROUTES --> Son la puerta de entrada a la api
+    CONTROLLERS --> Es el intermediario entre nuestras rutas y nuestra base de datos
+*/
 
 
 
@@ -91,17 +95,25 @@ const getApiPokemonByName = async (name) => {
 
 
 router.get('/', async (req, res, next) => {
-    /* El ID puede venir por {body, params, query} */
-    try {
-        const { name } = req.query;
-        const result = await getApiPokemonByName(name);
-        res.json(result)
-    } catch (err) {
-        next(err);
+    const { name } = req.query;
+    if (name) {
+        try {
+            const result = await getApiPokemonByName(name);
+            res.json(result)
+        } catch (err) {
+            next(err);
+        }
+    } else {
+        try {
+            const result = await getApiPokemons();
+            res.json(result);
+        } catch (err) {
+            next(err);
+        }
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
     /* El ID puede venir por {body, params, query} */
     try {
         const { id } = req.params;
@@ -112,44 +124,12 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.get('/', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
-        const result = await getApiPokemons();
-        res.json(result)
+        
     } catch (err) {
         next(err);
     }
-});
+})
 
 module.exports = router;
-
-
-
-
-
-
-
-/* const GetInfoApiPokemons = async () => {
-    let api = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40').then(e => e.data.results)
-    let prom = api.map(pokemon => pokemon.url)
-    let join = prom.map(url => axios(url).then(e => e.data))
-    join = await Promise.all(join)
-    const getApiData = await join.map(e => {
-        return {
-            id: e.id,
-            name: e.name,
-            img: e.sprites.other.home.front_default,
-            abilities:e.abilities.map((t) => t.ability.name),
-            sprite: e.sprites.versions["generation-v"]["black-white"].animated.front_default,
-            sprite: e.sprites.sprites/other/official-artwork,
-            attack: e.stats[1].base_stat,
-            defense : e.stats[2].base_stat,
-            hp: e.stats[0].base_stat,
-            speed: e.stats[5].base_stat,
-            weight: e.weight,
-            height: e.height,
-            type: e.types.map((t) => t.type.name),
-        }
-    })
-    return  getApiData;
-} */

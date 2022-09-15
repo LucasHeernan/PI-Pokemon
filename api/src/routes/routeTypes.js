@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const axios = require('axios');
+const { Types } = require('../db')
 
 const router = Router();
 
@@ -7,9 +8,14 @@ const router = Router();
 /* TRAER TODOS LOS TIPOS DE POKEMONS 'https://pokeapi.co/api/v2/type' */
 const getApiTypes = async () => {
     try {
-        const api = await axios(`https://pokeapi.co/api/v2/type`).then(e => e.data.results);
-        const types = api.map(e => ({name: e.name}))
-        return types;
+        let types = Types.findAll();
+        if (!types.length) {
+            const api = await axios(`https://pokeapi.co/api/v2/type`).then(e => e.data.results);
+            let allTypes = api.map(e => ({name: e.name}));
+            types = await Types.bulkCreate(allTypes);
+        } else {
+            return types;
+        }
     } catch (err) {
         throw err;
     }
