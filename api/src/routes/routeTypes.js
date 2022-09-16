@@ -24,7 +24,7 @@ const getApiTypes = async () => {
 router.get('/', async (req, res, next) => {
     try {
         const result = await getApiTypes();
-        res.json(result);
+        res.status(200).json(result);
     } catch (err) {
         next(err);
     }

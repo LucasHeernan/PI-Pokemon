@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const axios = require('axios');
-const { Pokemons } = require('../db')
+const { Pokemons } = require('../db');
+const { Op } = require ('sequelize');
 
 const router = Router();
 
-/* -----    FUNCIONES PARA TRAER LOS DATOS DE LA API    ----- */
+    /* -----    FUNCIONES PARA TRAER LOS DATOS DE LA API    ----- */
 
 /* TRAER LOS POKEMONS EN https://pokeapi.co/api/v2/pokemon */
 const getApiPokemons = async () => {
@@ -54,8 +55,9 @@ const getApiPokemonById = async (id) => {
 
 /* TRAER LOS POKEMONS POR NOMBRE 'https://pokeapi.co/api/v2/pokemon/{name}' */
 const getApiPokemonByName = async (name) => {
+    const short = name.toLocaleLowerCase();
     try {
-        const api = await axios(`https://pokeapi.co/api/v2/pokemon/${name}`).then(e => e.data)
+        const api = await axios(`https://pokeapi.co/api/v2/pokemon/${short}`).then(e => e.data)
         const pokemon = {
             id: api.id,
             name: api.name,
@@ -75,13 +77,31 @@ const getApiPokemonByName = async (name) => {
 
 
 
-/* 
-    MODELS --> Se comunica con la base de datos
-    ROUTES --> Son la puerta de entrada a la api
-    CONTROLLERS --> Es el intermediario entre nuestras rutas y nuestra base de datos
-*/
+    /* 
+        MODELS --> Se comunica con la base de datos
+        ROUTES --> Son la puerta de entrada a la api
+        CONTROLLERS --> Es el intermediario entre nuestras rutas y nuestra base de datos
+    */
 
-const getPokemonsByIdDb = async (id) => {
+
+
+    /*  ----------      FUNCIONES PARA LA BASE DE DATOS     ----------  */
+
+
+
+// TRAE TODOS LOS POKEMONES QUE HAYA EN LA BASE DE DATOS
+const getPokemonsDb = async () => {
+    try {
+        const pokemonDb = await Pokemons.findAll();
+        return pokemonDb;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+// BUSCA POR ID EN DB
+const getPokemonByIdDb = async (id) => {
     try {
         const pokemonDb = await Pokemons.findByPk(id);
         return pokemonDb;
@@ -91,16 +111,22 @@ const getPokemonsByIdDb = async (id) => {
     }
 }
 
+// BUSCA POR NAME EN DB
+const getPokemonByNameDb = async (name) => {
+    try {
+        const pokemonDb = await Pokemons.findOne({
+            where: { name: { [Op.like]: name } }
+        });
+        return pokemonDb;
+    } catch (err) {
+        console.log(err)
+        throw err
+    }
+}
 
 
 
-
-
-
-
-
-
-
+    /*          ----------          RUTAS          ----------          */
 
 
 
@@ -109,16 +135,22 @@ router.get('/', async (req, res, next) => {
     let result;
     if (name) {
         try {
-            result = await getApiPokemonByName(name);
-            res.json(result)
+            result = await getPokemonByNameDb(name);
+            if ( result === null ) result = await getApiPokemonByName(name);
+            res.status(200).json(result)
         } catch (err) {
+            res.status(400).send(`El pokemon ${name} no ha sido encontrado`)
             next(err);
         }
     } else {
+        /* ACA ENTRA SI NO RECIBE NOMBRE */
         try {
             result = await getApiPokemons();
-            res.json(result);
+            let pokemonDb = await getPokemonsDb();
+            let all = [...result, ...pokemonDb]
+            res.status(200).json(all);
         } catch (err) {
+            res.status(400).send(`Algo pasó que no anduvo, fijate`)
             next(err);
         }
     }
@@ -130,13 +162,14 @@ router.get('/:id', async (req, res, next) => {
         const { id } = req.params;
         let result;
         if (id.length > 10) {
-            result = await getPokemonsByIdDb(id);
-            res.json(result);
+            result = await getPokemonByIdDb(id);
+            res.status(200).json(result);
         } else {
             result = await getApiPokemonById(id);
-            res.json(result);
+            res.status(200).json(result);
         }
     } catch (err) {
+        res.status(400).send(`No se ha encontrado ningun pokemon con ese ${id}`);
         next(err);
     }
 });
@@ -145,13 +178,45 @@ router.post('/', async (req, res, next) => {
     try {
         const { name, attack, speed } = req.body;
         if (name && attack && speed) {
-            const pokemon = await Pokemons.create({name, attack, speed})
-            res.json(pokemon)
+            const pokemon = await Pokemons.create({name, attack, speed});
+            res.status(200).json(pokemon);
         } else {
-            res.status(200).send('No se recibieron todos los parametros')
+            res.status(200).send('No se recibieron todos los parámetros')
         }
     } catch (err) {
         next(err);
+    }
+})
+
+    /*              ----------     PUT AND DELETE     ----------              */
+
+router.put('/:id', async (req, res, next) => {
+    /* Parece que los datos por params (aunque sea int) llega como string */
+    try {
+        const { id } = req.params;
+        const changes = req.body;
+        if (id.length < 12) {
+            return res.status(200).send(`No se puede modificar un pokemon de la API`)
+        } else {
+            await Pokemons.update(changes, {
+                where: { id }
+            })
+            return res.status(200).send(`El pokemon ha sido modificado exitosamente`)
+        }
+    } catch (err) {
+        res.status(400).send(`Fijate keloke pero no anduvo`)
+        next(err);
+    }
+})
+
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        if ( id.length < 14 ) return res.status(200).send(`No se puede eliminar un pokemon de la API`)
+        await Pokemons.destroy( { where: { id } } )
+        res.status(200).send(`El pokemon ha sido eliminado exitosamente`)
+    } catch (err) {
+        next(err)
     }
 })
 

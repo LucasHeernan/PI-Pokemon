@@ -37,3 +37,28 @@ https://vimeo.com/soyhenry/review/546562453/6b3030ce4d?sort=lastUserActionEventD
 https://vimeo.com/soyhenry/review/546562506/b5a24a8e48?sort=lastUserActionEventDate&direction=desc
 
 */
+
+/* 
+
+{
+  "name": "Quilmes",
+  "attack": 3,
+  "speed": 3
+}
+{
+  "name": "Brahama",
+  "attack": 5,
+  "speed": 5
+}
+{
+  "name": "Heineken",
+  "attack": 7,
+  "speed": 7
+}
+{
+  "name": "Stella",
+  "attack": 10,
+  "speed": 10
+}
+
+*/
