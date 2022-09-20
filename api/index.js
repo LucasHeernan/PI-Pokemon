@@ -22,9 +22,9 @@ const { conn } = require('./src/db.js');
 const { getApiTypes } = require('./src/controllers/getsApi');
 
 // Syncing all the models at once.
-/* PARA QUE SE CARGUEN LA TABLA TYPES */
 conn.sync({ force: true, alter: false }).then(async () => {
   await getApiTypes();
+  /* PARA QUE SE CARGUEN LA TABLA TYPES */
   server.listen(3001, () => {
     console.log('connect success'); // eslint-disable-line no-console
   });

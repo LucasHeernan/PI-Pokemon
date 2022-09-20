@@ -37,5 +37,8 @@ module.exports = (sequelize) => {
     imgId: {
       type: DataTypes.TEXT,
     }
+  },
+  {
+    timestamps: false
   });
 };

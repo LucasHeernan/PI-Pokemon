@@ -1,6 +1,6 @@
 const { Router } = require('express');
-const { Pokemons } = require('../db');
-// const { Op } = require ('sequelize');
+const { Pokemons, Types } = require('../db');
+const { Op } = require ('sequelize');
 const { getApiPokemons, getApiPokemonById, getApiPokemonByName } = require('../controllers/getsApi');
 const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../controllers/getsDb');
 
@@ -46,24 +46,56 @@ router.get('/:id', async (req, res, next) => {
             res.status(200).json(result);
         }
     } catch (err) {
-        res.status(400).send(`No se ha encontrado ningun pokemon con ese ${id}`);
+        res.status(400).send(`No se ha encontrado ningun pokemon con ese id`);
         next(err);
     }
 });
 
-router.post('/', async (req, res, next) => {
+
+router.post('/', async (req, res) => {
+    const { name, attack, defense, hp , speed, height, weight, types, img, imgId } = req.body;
     try {
-        const { name, attack, defense } = req.body;
-        if (name && attack && defense) {
-            const pokemon = await Pokemons.create(req.body);
-            res.status(200).json(pokemon);
-        } else {
-            res.status(200).send('No se recibieron todos los parámetros')
-        }
+        let newPokemon = await Pokemons.create({
+            name,
+            attack,
+            defense,
+            hp,
+            speed,
+            height,
+            weight,
+            img,
+            imgId
+        });
+        let typeDb = await Types.findAll({ where: {name: types}});
+        newPokemon.addTypes(typeDb);
+        res.status(201).json(newPokemon);
     } catch (err) {
-        next(err);
+        console.log('Shomething malo:', err)
     }
 })
+
+// router.post('/', async (req, res, next) => {
+//     try {
+//         const { name, types } = req.body;
+//         if (name) {
+//             let typeFind = await Types.findAll({
+//                 where: {
+//                     name: {
+//                         [Op.or]: types
+//                     }
+//                 }
+//             })
+//             const pokemon = await Pokemons.create(req.body);
+//             await pokemon.addTypes(typeFind);
+//             res.status(200).json(pokemon);
+//         } else {
+//             res.status(200).send('No se recibieron todos los parámetros')
+//         }
+//     } catch (err) {
+//         next(err);
+//     }
+// })
+
 
     /*              ----------     PUT AND DELETE     ----------              */
 

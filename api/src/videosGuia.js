@@ -48,21 +48,21 @@
   {
     "name": "Quilmes",
     "attack": 3,
-    "speed": 3
+    "defense": 3
   }
   {
     "name": "Brahama",
     "attack": 5,
-    "speed": 5
+    "defense": 5
   }
   {
     "name": "Heineken",
     "attack": 7,
-    "speed": 7
+    "defense": 7
   }
   {
     "name": "Stella",
     "attack": 10,
-    "speed": 10
+    "defense": 10
 }
 */
