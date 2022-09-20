@@ -1,10 +1,10 @@
 const { Router } = require('express');
-const pokemonsRoutes = require('./routesApi');
-const typesRoute = require('./routeTypes');
+const pokemons = require('./pokemons');
+const types = require('./types');
 
 const router = Router();
 
-router.use('/pokemons', pokemonsRoutes);
-router.use('/types', typesRoute);
+router.use('/pokemons', pokemons);
+router.use('/types', types);
 
 module.exports = router;

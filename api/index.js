@@ -19,9 +19,12 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
+const { getApiTypes } = require('./src/controllers/getsApi');
 
 // Syncing all the models at once.
-conn.sync({ force: false, alter: true }).then(() => {
+/* PARA QUE SE CARGUEN LA TABLA TYPES */
+conn.sync({ force: true, alter: false }).then(async () => {
+  await getApiTypes();
   server.listen(3001, () => {
     console.log('connect success'); // eslint-disable-line no-console
   });
