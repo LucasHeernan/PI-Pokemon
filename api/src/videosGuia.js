@@ -45,24 +45,16 @@
   */
 
 /*
-  {
-    "name": "Quilmes",
-    "attack": 3,
-    "defense": 3
-  }
-  {
-    "name": "Brahama",
-    "attack": 5,
-    "defense": 5
-  }
-  {
-    "name": "Heineken",
-    "attack": 7,
-    "defense": 7
-  }
-  {
-    "name": "Stella",
-    "attack": 10,
-    "defense": 10
+{
+  "name": "String",
+  "attack": 9,
+  "defense": 9,
+  "hp": 1,
+  "speed": 1,
+  "height": 1,
+  "weight": 1,
+  "img": "askdjl.pnj",
+  "imgId": "asdasj.pnj",
+  "types": "normal"
 }
 */

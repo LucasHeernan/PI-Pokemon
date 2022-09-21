@@ -6,27 +6,9 @@ const { Op } = require ('sequelize');
 async function getPokemonsDb() {
     try {
         const pokemonDb = await Pokemons.findAll({
-            attributes:[
-                'id',
-                'name',
-                'hp',
-                'attack',
-                'defense',
-                'speed',
-                'height',
-                'weight',
-                'img',
-            ],
             include: {
                 model: Types,
-                attributes:['name'],
-                through: {
-                    attribute:[]
-                }
-            },
-            attributes:{
-                exclude:['createdAt','updatedAt']
-                
+                attributes: ['name']
             }
         });
         return pokemonDb;
@@ -39,7 +21,12 @@ async function getPokemonsDb() {
 // BUSCA POR ID EN LA BASE DE DATOS
 async function getPokemonByIdDb(id) {
     try {
-        const pokemonDb = await Pokemons.findByPk(id);
+        const pokemonDb = await Pokemons.findByPk(id, {
+            include: {
+                model: Types,
+                attributes: ['name']
+            }
+        });
         return pokemonDb;
     } catch (err) {
         console.log(err);
@@ -52,7 +39,11 @@ async function getPokemonByNameDb(name) {
     try {
         const pokemonDb = await Pokemons.findOne({
             /* SENSITIVE NAMES */
-            where: { name: { [Op.iLike]: name } }
+            where: { name: { [Op.iLike]: name } },
+            include: {
+                model: Types,
+                attributes: ['name']
+            }
         });
         return pokemonDb;
     } catch (err) {
