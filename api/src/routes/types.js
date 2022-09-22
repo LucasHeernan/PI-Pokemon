@@ -14,16 +14,4 @@ router.get('/', async (req, res, next) => {
 })
 
 
-// router.get('/', async (req, res) => {
-//     try {
-//         await SaveTypesDb();
-//         let allTypes = await GetTypesDB();
-//         res.status(200).send(allTypes)
-//     } catch (err) {
-//         res.status(400).send('Algo paso que no anduvo', err);
-//         console.log(err);
-//     }
-// })
-
-
 module.exports = router;

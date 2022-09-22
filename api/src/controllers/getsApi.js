@@ -17,8 +17,7 @@ async function getApiPokemons() {
                 defense: p.stats[2].base_stat,
                 speed: p.stats[5].base_stat,
                 height: p.height,
-                weigth: p.weigth,
-                // types: p.types.map(t => t.type.name),
+                weight: p.weight,
                 types: p.types.map((t) => ({ name: t.type.name })),
                 img: p.sprites.other.dream_world.front_default,
                 imgId: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png`
@@ -42,8 +41,7 @@ async function getApiPokemonById(id) {
             defense: api.stats[2].base_stat,
             speed: api.stats[5].base_stat,
             height: api.height,
-            weigth: api.weigth,
-            // types: api.types.map(t => t.type.name),
+            weight: api.weight,
             types: api.types.map((t) => ({ name: t.type.name })),
             img: api.sprites.other.dream_world.front_default,
             imgId: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${api.id}.png`
@@ -67,8 +65,7 @@ async function getApiPokemonByName(name) {
             defense: api.stats[2].base_stat,
             speed: api.stats[5].base_stat,
             height: api.height,
-            weigth: api.weigth,
-            // types: api.types.map(t => t.type.name),
+            weight: api.weight,
             types: api.types.map((t) => ({ name: t.type.name })),
             img: api.sprites.other.dream_world.front_default,
             imgId: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${api.id}.png`
@@ -95,35 +92,6 @@ async function getApiTypes() {
         throw err;
     }
 }
-
-// const SaveTypesDb = async () => {
-//     try {
-//         let api = await axios("https://pokeapi.co/api/v2/type")
-//         let typesGet = api.data.results.map(e => e.name)
-//         const pokemons = new Set(typesGet.flat()) //Tenga en cuenta que el flat() crea una nueva matriz y no cambia la matriz original:
-//         pokemons.forEach(async t => {   //forEach() ejecuta la función indicada una vez por cada elemento del array.
-//             await Types.findOrCreate({   //El método Sequelize findOrCreate() consulta que intenta encontrar una entrada en su tabla o crear una nueva entrada cuando no se encuentra nada.
-//               where: {name : t}
-//             })
-//         })
-//         const allTypes= await Types.findAll()///La findall()función escanea string de izquierda a derecha y encuentra todas las coincidencias de patternen el string.
-//         return allTypes
-//     }
-//     catch (error) {
-//         console.log("Something went wrong, ", error)
-//     }
-// }
-
-//Simplemente obtenga los temperamentos de la API, cárguelos en la base de datos y envíelos de vuelta al cliente.
-// const GetTypesDB = async () =>{
-//     try {
-//         let TypeDB = await Types.findAll();
-//         TypeDB = TypeDB.map((t) => t.toJSON());
-//         return TypeDB;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
   
 
 module.exports = {

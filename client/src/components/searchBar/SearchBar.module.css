@@ -1,0 +1,37 @@
+.container {
+    display: inline-block;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(45deg,  #ce2424e7 0%,#c8eceb 50%,#3c7ebb 100%);
+    opacity: 0.9;
+    border: 1px solid #2b2141;
+    border-radius: 2rem;
+    box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.3);
+    padding: 0.6rem;
+    margin: 1.5rem;
+}
+
+.input {
+    align-items: center;
+    text-align: center;
+    border-radius: 0.7rem;
+    margin-right: 3px;
+    height: 1.8rem;
+}
+
+.btn {
+    color: black;
+    border: 2px rgb(82, 73, 73) solid;
+    background-color: rgba(223, 64, 64, 0.993);
+    border-radius: 0.9rem;
+    text-align: center;
+    width: 6rem;
+    height: 1.8rem;
+}
+
+.btn:hover {
+    color: rgb(255, 255, 1);
+    border: 2px rgb(255, 255, 1) solid;
+    background-color: black;
+}

@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { Pokemons, Types } = require('../db');
-const { Op } = require ('sequelize');
 const { getApiPokemons, getApiPokemonById, getApiPokemonByName } = require('../controllers/getsApi');
 const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../controllers/getsDb');
 
@@ -92,9 +91,7 @@ router.post('/', async (req, res, next) => {
 //         if (name) {
 //             let typeFind = await Types.findAll({
 //                 where: {
-//                     name: {
-//                         [Op.or]: types
-//                     }
+//                     name: { types }
 //                 }
 //             })
 //             const pokemon = await Pokemons.create(req.body);

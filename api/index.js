@@ -24,7 +24,7 @@ const { getApiTypes } = require('./src/controllers/getsApi');
 // Syncing all the models at once.
 conn.sync({ force: true, alter: false }).then(async () => {
   await getApiTypes();
-  /* PARA QUE SE CARGUEN LA TABLA TYPES */
+  /* PARA QUE SE CARGUE LA TABLA TYPES AL INICIALIZAR SEQUELIZE*/
   server.listen(3001, () => {
     console.log('connect success'); // eslint-disable-line no-console
   });

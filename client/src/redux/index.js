@@ -9,6 +9,8 @@ const store = createStore(
     composeEnhancers(applyMiddleware(thunk))
 );
 
+export default store;
+
 /*
 
     REDUX = [
@@ -21,5 +23,3 @@ const store = createStore(
     ]
 
 */
-
-export default store;
