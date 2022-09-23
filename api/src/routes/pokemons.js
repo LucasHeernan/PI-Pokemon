@@ -6,7 +6,7 @@ const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../cont
 const router = Router();
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res/* , next */) => {
     const { name } = req.query;
     let result;
     if (name) {
@@ -15,8 +15,8 @@ router.get('/', async (req, res, next) => {
             if ( result === null ) result = await getApiPokemonByName(name);
             res.status(200).json(result)
         } catch (err) {
-            res.status(400).send(`The pokemon ${name} has not been found`)
-            next(err);
+            res.status(400).send(`The pokemon ${name} has not been found`, err)
+            // next(err);
         }
     } else {
         /* ACA ENTRA SI NO RECIBE NOMBRE */
@@ -26,13 +26,13 @@ router.get('/', async (req, res, next) => {
             let all = [...result, ...pokemonDb]
             res.status(200).json(all);
         } catch (err) {
-            res.status(400).send(`Couldn't fetch any items`)
-            next(err);
+            res.status(400).send(`Couldn't fetch any items`, body);
+            // next(err);
         }
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res/* , next */) => {
     /* {params = :id || query = ?id=1 } */
     try {
         const { id } = req.params;
@@ -45,13 +45,13 @@ router.get('/:id', async (req, res, next) => {
             res.status(200).json(result);
         }
     } catch (err) {
-        res.status(400).send(`No pokemon found with that id`);
-        next(err);
+        res.status(400).send(`No pokemon found with that id -`, err);
+        // next(err);
     }
 });
 
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res/* , next */) => {
     const { name, hp, attack, defense, speed, height, weight, types, img, imgId } = req.body;
     const short = name.toLowerCase()
     try {
@@ -66,8 +66,8 @@ router.post('/', async (req, res, next) => {
         }
         res.status(200).send(`The pokemon ${name} already exists in the database`);
     } catch (err) {
-        res.status(400).send('Something went wrong', err)
-        next(err);
+        res.status(400).send('Something went wrong:', err)
+        // next(err);
     }
 })
 

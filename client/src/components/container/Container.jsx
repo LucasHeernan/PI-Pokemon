@@ -16,20 +16,19 @@ export default function Container() {
         dispatch(getAllPokemons());
     }, [dispatch]);
 
-    // LA LOGICA ES: Sí pokemon es igual a false, mostra all pokemon y al reves
-    // EN CODIGO ==> !!pokemon === true ? pokemon : all
+    // LA LOGICA ES: Sí pokemon[0] es un object, mostrar rl object sino mostrar all
+    // EN CODIGO ==> typeof pokemon[0] === "object" ? pokemon : all
 
     return (
         <section className={c.container} >
-            {console.log(pokemon)}
             {
-                pokemon.length === true ?
+                typeof pokemon[0] === "object" ?
                 <div>
                     <Pokemon
-                        name={pokemon.name}
-                        imgId={pokemon.imgId}
-                        types={pokemon.types}
-                        id={pokemon.id}
+                        name={pokemon[0].name}
+                        imgId={pokemon[0].imgId}
+                        types={pokemon[0].types}
+                        id={pokemon[0].id}
                     />
                 </div> :
                 all.map(e =>

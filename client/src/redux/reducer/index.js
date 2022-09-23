@@ -2,7 +2,7 @@ import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_DETAILS, 
 
 const initialState = {
     all: [],
-    pokemon: {},
+    pokemon: [],
     details: {},
     types: []
 }
@@ -22,8 +22,9 @@ const pokeReducer = ( state = initialState, action ) => {
         case GET_POKEMON_BY_NAME:
             return {
                 ...state,
-                pokemon: action.payload
+                pokemon: [...state.pokemon, action.payload]
             }
+            //  products: [...state.products, action.payload]
         case GET_DETAILS:
             return {
                 ...state,

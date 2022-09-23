@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
           <Switch>
-            {/* <Route exact path="/create" component={Create} /> */}
+            {/* <Route exact path="/home/create" component={Create} /> */}
             {/* 5 - FALTA LA RUTA DE CREACIÓN */} 
             <Route exact path="/home/:id" component={Details} />
             {/* 3?4 PÁGINA DE DETALLE (información por ID) */}
