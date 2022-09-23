@@ -32,7 +32,7 @@ export function getPokemonById(id) {
 export function getPokemonByName(name) {
     return async (dispatch) => {
         try {
-            const data = await axios(`http://localhost:3001/pokemons/${name}`).then(e => e.data);
+            const data = await axios(`http://localhost:3001/pokemons?name=${name}`).then(e => e.data);
             return dispatch({
                 type: GET_POKEMON_BY_NAME,
                 payload: data

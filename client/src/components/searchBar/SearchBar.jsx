@@ -3,6 +3,9 @@ import c from "./SearchBar.module.css";
 import { getPokemonByName } from "../../redux/actions";
 import { useDispatch } from "react-redux";
 
+// BUSCADOR POKEMON POR NAME
+/* ¡ AVERIGUAR ¿CÓMO? HACER QUE LA BUSQUEDA VAYA POR QUERY ! */
+
 export default function SearchBar() {
     const dispatch = useDispatch();
     const [poke, setPoke] = useState('');
@@ -24,13 +27,12 @@ export default function SearchBar() {
     }
 
     function handleChange(e) {
-        e.preventDefault();
         setPoke(e.target.value)
     }
 
     return (
         <nav className={c.container}>
-            <form>
+            <form onSubmit={e => handleSubmit(e)}>
                 <input
                 onChange={e => handleChange(e)}
                     className={c.input}
@@ -39,7 +41,6 @@ export default function SearchBar() {
                     placeholder="Nombre"
                 />
                 <input
-                    onSubmit={e => handleSubmit(e)}
                     className={c.btn}
                     type="submit" value="Buscar"
                 />

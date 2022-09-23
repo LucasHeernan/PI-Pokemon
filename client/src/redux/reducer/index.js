@@ -2,7 +2,7 @@ import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_DETAILS, 
 
 const initialState = {
     all: [],
-    pokemon: [],
+    pokemon: {},
     details: {},
     types: []
 }

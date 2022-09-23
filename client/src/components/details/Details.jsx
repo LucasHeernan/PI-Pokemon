@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDetails } from "../../redux/actions";
 
+// COMPONENTE DETALLES
+// Se muestra en la ruta {/home/id}
+
 export default function Details() {
     const { id } = useParams();
     const dispatch = useDispatch();
