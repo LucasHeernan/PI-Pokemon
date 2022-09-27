@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import c from "./SearchBar.module.css";
-// import { getPokemonByName } from "../../redux/actions";
-// import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 
-// BUSCADOR POKEMON POR NAME
 
-export default function SearchBar(/* {setNow} */) {
-    // const dispatch = useDispatch();
+export default function SearchBar() {
+    
     const history = useHistory();
     const [poke, setPoke] = useState('');
 
@@ -26,9 +23,7 @@ export default function SearchBar(/* {setNow} */) {
         if (!poke) return alert('DEBES INGRESAR UN NOMBRE');
         if (valid(poke).includes(false)) return alert('NO SE PERMITEN NÚMEROS');
         else {
-            // dispatch(getPokemonByName(poke));
             history.push(`/home/${poke}`);
-            // setNow(poke);
             setPoke('');
         }
     }

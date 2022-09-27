@@ -10,7 +10,7 @@ import { getAllPokemons/* , getPokemonByName */ } from "../../redux/actions";
 export default function Home() {
 
     const dispatch = useDispatch();
-    const { all } = useSelector(state => state);
+    const { all, pokemon } = useSelector(state => state);
     // const { pokemon } = useSelector(state => state);     /* Tendría que traer getPokemonByName() */
     // const [now, setNow] = useState('');                  /* Para usar con la SearchBar */
 
@@ -39,22 +39,73 @@ export default function Home() {
                         <Filters />
                     </div>
                     <div>
-                        {all?.map(e =>
-                            <div key={e.id}>
-                                <Pokemon
-                                    name={e.name}
-                                    imgId={e.imgId}
-                                    types={e.types}
-                                    id={e.id}
-                                />
-                            </div>
-                        )}
+                        {
+                            pokemon?.length > 0 ?
+                            pokemon.map(e => 
+                                <div key={e.id}>
+                                    <Pokemon
+                                        name={e.name}
+                                        imgId={e.imgId}
+                                        types={e.types}
+                                        id={e.id}
+                                    />
+                                </div>
+                            ) :
+                            all?.map(e =>
+                                <div key={e.id}>
+                                    <Pokemon
+                                        name={e.name}
+                                        imgId={e.imgId}
+                                        types={e.types}
+                                        id={e.id}
+                                    />
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             }
         </div>
     )
 }
+
+// {/* <div>
+//     {all?.map(e =>
+//         <div key={e.id}>
+//             <Pokemon
+//                 name={e.name}
+//                 imgId={e.imgId}
+//                 types={e.types}
+//                 id={e.id}
+//             />
+//         </div>
+//     )}
+// </div> */}
+// {/* <div>
+//     {
+//         pokemon?.length > 1 ? 
+//         pokemon.map(e => 
+//             <div key={e.id}>
+//                 <Pokemon
+//                     name={e.name}
+//                     imgId={e.imgId}
+//                     types={e.types}
+//                     id={e.id}
+//                 />
+//             </div>
+//         ) :
+//         all?.map(e =>
+//             <div key={e.id}>
+//                 <Pokemon
+//                     name={e.name}
+//                     imgId={e.imgId}
+//                     types={e.types}
+//                     id={e.id}
+//                 />
+//             </div>
+//         )
+//     }
+// </div> */}
 
 // return (
 //     <div>
@@ -82,18 +133,18 @@ export default function Home() {
 //                             />
 //                         </div>
 //                     :
-                        // <div>
-                        //     {all?.map(e =>
-                        //         <div key={e.id}>
-                        //             <Pokemon
-                        //                 name={e.name}
-                        //                 imgId={e.imgId}
-                        //                 types={e.types}
-                        //                 id={e.id}
-                        //             />
-                        //         </div>
-                        //     )}
-                        // </div>
+//                        <div>
+//                            {all?.map(e =>
+//                                <div key={e.id}>
+//                                    <Pokemon
+//                                        name={e.name}
+//                                        imgId={e.imgId}
+//                                        types={e.types}
+//                                        id={e.id}
+//                                    />
+//                                </div>
+//                            )}
+//                        </div>
 //                     }
 //                 </div>
 //             </div>

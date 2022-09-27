@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { orderByAttack, orderByName, orderByType } from "../../redux/actions";
+import { orderByAttack, orderByName, orderByType, orderByOrigin } from "../../redux/actions";
 
 export default function Filters() {
 
@@ -13,11 +13,16 @@ export default function Filters() {
         dispatch(orderByName(e.target.value));
         setClick(e.target.value);
     }
-    
+
     function handlerByAttack(e) {
         e.preventDefault();
         dispatch(orderByAttack(e.target.value));
         setClick(e.target.value);
+    }
+
+    function handlerByOrigin(e) {
+        e.preventDefault();
+        dispatch(orderByOrigin(e.target.value));
     }
 
     function handlerByType(e) {
@@ -27,22 +32,23 @@ export default function Filters() {
 
     return (
         <div>
-            <select defaultValue="Alphabetical order" 
+            <select defaultValue="Alphabetical order"
             onChange={e => handlerByName(e)}>
-                <option disabled={click}>Order by Name</option>
+                <option value='DEFAULT'>Order by Name</option>
                 <option value='ASC'>A - Z</option>
-                <option value='DESC'>Z - A</option>
+                <option value='DES'>Z - A</option>
             </select>
             <select defaultValue="Select Attack"
             onChange={e => handlerByAttack(e)}>
-                <option disabled={click}>Order by Attack</option>
+                <option value='DEFAULT'>Order by Attack</option>
                 <option value='ASC'>Ascendent</option>
-                <option value='DESC'>Descendent</option>
+                <option value='DES'>Descendent</option>
             </select>
-            <select  defaultValue="All Pokemons"> 
-                <option>Filter by Created</option>
-                <option value="ALL">All</option>
-                <option value="CREATED">Created</option>
+            <select  defaultValue="Origin"
+            onChange={e => handlerByOrigin(e)}>
+                <option value='ALL'>Filter by Created</option>
+                <option value='API'>Existing</option>
+                <option value='CREATED'>Created</option>
             </select>
             <select defaultValue="All Types"
             onChange={e => handlerByType(e)}>
