@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import c from "./SearchBar.module.css";
-import { getPokemonByName } from "../../redux/actions";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+// import { getPokemonByName } from "../../redux/actions";
+// import { useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 
 // BUSCADOR POKEMON POR NAME
-/* ¡ AVERIGUAR ¿CÓMO? HACER QUE LA BUSQUEDA VAYA POR QUERY ! */
 
-export default function SearchBar() {
-    const dispatch = useDispatch();
+export default function SearchBar(/* {setNow} */) {
+    // const dispatch = useDispatch();
+    const history = useHistory();
     const [poke, setPoke] = useState('');
 
     function valid (text) {
@@ -17,6 +17,7 @@ export default function SearchBar() {
     }
 
     function handleChange(e) {
+        e.preventDefault();
         setPoke(e.target.value)
     }
 
@@ -25,7 +26,9 @@ export default function SearchBar() {
         if (!poke) return alert('DEBES INGRESAR UN NOMBRE');
         if (valid(poke).includes(false)) return alert('NO SE PERMITEN NÚMEROS');
         else {
-            dispatch(getPokemonByName(poke));
+            // dispatch(getPokemonByName(poke));
+            history.push(`/home/${poke}`);
+            // setNow(poke);
             setPoke('');
         }
     }
@@ -56,10 +59,4 @@ export default function SearchBar() {
             </form>
         </nav>
     )
-
-    // return (
-    //     <nav className={c.container}>
-            
-    //     </nav>
-    // )
 }

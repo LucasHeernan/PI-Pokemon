@@ -1,5 +1,8 @@
 export const GET_ALL_POKEMONS = 'GET_ALL_POKEMONS';
 export const GET_POKEMON_BY_ID = 'GET_POKEMON_BY_ID';
 export const GET_POKEMON_BY_NAME = 'GET_POKEMON_BY_NAME';
-export const GET_DETAILS = 'GET_DETAILS';
 export const GET_TYPES = 'GET_TYPES';
+export const POST_POKEMON = 'POST_POKEMON';
+export const ORDER_BY_ATTACK = 'ORDERING_BY_ATTACK';
+export const ORDER_BY_NAME = 'ORDER_BY_NAME';
+export const ORDER_BY_TYPE = 'ORDER_BY_TYPE';

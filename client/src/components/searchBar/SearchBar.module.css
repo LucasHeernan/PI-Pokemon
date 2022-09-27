@@ -20,19 +20,20 @@
 }
 
 .span {
-    position: relative;
     color: white;
     font-size: large;
-    left: 1px;
     text-decoration: none;
 }
 
 .about {
     color: white;
+    font-size: large;
     text-decoration: none;
 }
 
 .input {
+    align-items: center;
+    text-align: center;
     border-radius: 0.7rem;
     margin-right: 3px;
     height: 1.8rem;
