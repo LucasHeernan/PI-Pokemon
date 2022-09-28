@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./create.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { postPokemon } from "../../redux/actions";
+import { postPokemon, getTypes } from "../../redux/actions";
 
 export default function Create() {
 
     const dispatch = useDispatch();
-    const types = useSelector(store => store.types);
+    const { types } = useSelector(store => store);
 
     const [input, setInput] = useState({
         name: "",
@@ -16,7 +16,8 @@ export default function Create() {
         defense: null,
         speed: null,
         height: null,
-        weight: null
+        weight: null,
+        types: []
     });
 
     function handleChange(e) {
@@ -31,8 +32,21 @@ export default function Create() {
         dispatch(postPokemon(input));
     }
 
+    function handleSelect(e) {
+        if (e.target.value !== 'SELECT') {
+          setInput({
+            ...input,
+            types: [...input.types, e.target.value],
+          });
+        }
+    }
+
+    useEffect(() => {
+        types.length < 2 && dispatch(getTypes());
+    }, [dispatch, types])
+
     return (
-        <div className="allForm">
+        <div>
             <br/>
             <div className="divBtnCreate">
                 <Link to="/home">
@@ -41,17 +55,17 @@ export default function Create() {
             </div>
             <div>
                 <br/>
-                <h2>
+                <h2 className="h2">
                     CREATE YOUR POKEMON
                 </h2>
                 
                 <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className="formulario" id="formulario">
+                    <div className="formulario">
                         {/* ..... Nombre ..... */}
-                        <div className="formulario__grupo" id="grupo__name">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Name:</label>
                             <div className="formulario__grupo-input">
-                            <input
+                                <input
                                     onChange={(e) => handleChange(e)}
                                     className="formulario__input"
                                     type="text"    
@@ -64,7 +78,7 @@ export default function Create() {
                         </div>
 
                         {/* ..... Hp ..... */}
-                        <div className="formulario__grupo" id="grupo__hp">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Hp:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -83,7 +97,7 @@ export default function Create() {
                         </div>
 
                         {/* ..... Imagen url ..... */}
-                        <div className="formulario__grupo" id="grupo__image">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Image URL:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -98,7 +112,7 @@ export default function Create() {
                         </div>
 
                         {/* ..... height ..... */}
-                        <div className="formulario__grupo" id="grupo__height">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Height:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -117,7 +131,7 @@ export default function Create() {
                         </div>
 
                         {/* ..... weight ..... */}
-                        <div className="formulario__grupo" id="grupo__weight">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Weight:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -137,7 +151,7 @@ export default function Create() {
         
                         
                         {/* ..... attack ..... */}
-                        <div className="formulario__grupo" id="grupo__attack">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Attack:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -156,7 +170,7 @@ export default function Create() {
                         </div>
 
                         {/* ..... defense ..... */}
-                        <div className="formulario__grupo" id="grupo__defense">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">Defense:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -175,7 +189,7 @@ export default function Create() {
                         </div>
         
                         {/* ..... speed ..... */}
-                        <div className="formulario__grupo" id="grupo__speed">
+                        <div className="formulario__grupo">
                             <label className="formulario__label">speed:</label>
                             <div className="formulario__grupo-input">
                                 <input
@@ -197,10 +211,12 @@ export default function Create() {
                         <div className="formulario__grupo">
                             <div>
                                 <label className="formulario__label">types: </label>
-                                <select 
-                                    className="formulario__input" 
-                                    >
-                                    <option>Select types</option>
+                                <select className="formulario__input"
+                                    onChange={e => handleSelect(e)}>
+                                    <option value={'SELECT'}>Select types</option>
+                                    {types?.map((e, i) => (
+                                    <option key={i} value={e.name}>{e.name}</option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -211,7 +227,7 @@ export default function Create() {
                             <div className="formulario__label">
                                 <label>types selected:</label>
                                 <br/>
-                                <div className="type-lateral">
+                                {/* <div className="type-lateral">
                                     {types?.map((t, i) =>
                                     <div key={i} className="box-input-element">
                                         <span>{t.name}</span>
@@ -220,7 +236,7 @@ export default function Create() {
                                         >X</button>
                                     </div>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
                             </div>
                         </div>  

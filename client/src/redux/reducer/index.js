@@ -5,8 +5,7 @@ const initialState = {
     all: [],
     pokemon: [],
     details: [],
-    types: [],
-    post: {}
+    types: []
 }
 
 const pokeReducer = ( state = initialState, action ) => {
@@ -34,8 +33,7 @@ const pokeReducer = ( state = initialState, action ) => {
             }
         case POST_POKEMON:
             return {
-                ...state,
-                post: action.payload
+                ...state
             }
         case SORT_BY_ATTACK:
             let attack = [...state.all]

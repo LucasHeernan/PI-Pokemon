@@ -1,27 +1,20 @@
-import React, { useEffect/* , useState */ } from "react";
+import React, { useEffect } from "react";
 import SearchBar from "../searchBar/SearchBar";
-// import Container from "../container/Container";
 import Filters from "../filters/Filters";
 import Pokemon from "../pokemon/Pokemon";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPokemons/* , getPokemonByName */ } from "../../redux/actions";
+import { getAllPokemons } from "../../redux/actions";
 
 
 export default function Home() {
 
     const dispatch = useDispatch();
     const { all, pokemon } = useSelector(state => state);
-    // const { pokemon } = useSelector(state => state);     /* Tendría que traer getPokemonByName() */
-    // const [now, setNow] = useState('');                  /* Para usar con la SearchBar */
 
     useEffect(() => {
-        // if (now === '') {
         if (all.length < 2) {
             return dispatch(getAllPokemons())
         }
-        // } else {
-            // dispatch(getPokemonByName(now));
-        // }
     }, [dispatch, all])
 
     return (

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { Pokemons, Types } = require('../db');
+const { Op } = require ('sequelize');
 const { getApiPokemons, getApiPokemonById, getApiPokemonByName } = require('../controllers/getsApi');
 const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../controllers/getsDb');
 
@@ -50,26 +51,39 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
-
 router.post('/', async (req, res, next) => {
-    const { name, hp, attack, defense, speed, height, weight, types, img, imgId } = req.body;
-    const short = name.toLowerCase()
+    const { name, hp, attack, defense, speed, height, weight, types } = req.body;
     try {
-        let [pokemon, created ] = await Pokemons.findOrCreate({
-            where: { name: short },
-            defaults: { hp, attack, defense, speed, height, weight, img, imgId }
-        })
-        if (created) {
-            let typeFind = await Types.findAll({ where: { name: types } });
-            await pokemon.addTypes(typeFind);
-            return res.status(200).send(`${name} has been created successfully`);
-        }
-        res.status(200).send(`The pokemon ${name} already exists in the database`);
+        let newPokemon = await Pokemons.create({name, hp, attack, defense, speed, height, weight, types});
+        let typeDb = await Types.findAll({ where: { name: types } });
+        await newPokemon.addTypes(typeDb);
+        res.status(200).json(newPokemon);
     } catch (err) {
-        res.status(400).send('Something went wrong:')
+        res.status(400).send('Something went wrong');
         next(err);
     }
 })
+
+// CREA O ENCUENTRA SI YA EXISTE
+// router.post('/', async (req, res, next) => {
+//     const { name, hp, attack, defense, speed, height, weight, types } = req.body;
+//     const short = name.toLowerCase()
+//     try {
+//         let [pokemon, created ] = await Pokemons.findOrCreate({
+//             where: { name: short },
+//             defaults: { hp, attack, defense, speed, height, weight }
+//         })
+//         if (created) {
+//             let typeFind = await Types.findAll({ where: { name: {[Op.or]: types} } });
+//             await pokemon.addTypes(typeFind);
+//             return res.status(200).send(`${name} has been created successfully`);
+//         }
+//         res.status(200).send(`The pokemon ${name} already exists in the database`);
+//     } catch (err) {
+//         res.status(400).send('Something went wrong:')
+//         next(err);
+//     }
+// })
 
 // CREA SIN VERIFICAR SI YA EXISTE
 // router.post('/', async (req, res) => {

@@ -1,8 +1,5 @@
-.allForm {
-    background: transparent;
-}
 
-.allForm h2 {
+.h2 {
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;
