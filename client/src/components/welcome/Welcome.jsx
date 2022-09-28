@@ -15,7 +15,7 @@ export default function Welcome() {
     }, [dispatch])
 
     return (
-        <div className={c.Landing}>
+        <div className={c.App}>
             <h1 className={c.title}>Welcome to Pokemon App</h1>
             { all?.length && types?.length ?
                 <Link to='/home'>

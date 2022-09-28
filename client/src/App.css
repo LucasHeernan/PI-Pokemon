@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.app-div {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+body {
+  background-image: linear-gradient(90deg, #1b1f58b9 0%,#a8bbce 50%,#07312800 100%), url( './fondePi.jpg' );
+}

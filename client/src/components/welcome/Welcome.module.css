@@ -1,8 +1,10 @@
-.Landing {
-    background: url("../../portada_pokemon-peliculas.jpeg");
+.App {
+    display: flex;
+    flex-direction: column;
+    background-image: url("../../portada_pokemon-peliculas.jpeg");
     background-size: cover;
-    height: 100vh;
-}
+    min-height: 100vh;
+  }
 
 .title {
     margin-left: 30%;

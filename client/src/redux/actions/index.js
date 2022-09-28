@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, /* POST_POKEMON, */ 
+import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
 SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE } from '../actionTypes';
 
 export function getAllPokemons() {
@@ -31,10 +31,13 @@ export function getPokemonById(id) {
 }
 
 export function postPokemon(pokemon) {
-    return async () => {
+    return async (dispatch) => {
         try {
-            const post = await axios.post(`http://localhost:3001/pokemons`, pokemon)
-            return post;
+            const data = await axios.post(`http://localhost:3001/pokemons`, pokemon)
+            return dispatch({
+                type: POST_POKEMON,
+                payload: data
+            })
         } catch (err) {
             console.log(err)
         }

@@ -4,6 +4,7 @@ import Filters from "../filters/Filters";
 import Pokemon from "../pokemon/Pokemon";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPokemons } from "../../redux/actions";
+import c from "./Home.module.css";
 
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
     }, [dispatch, all])
 
     return (
-        <div>
+        <div className="app-div">
             {
                 all.length < 2 ?
                 <div>
@@ -31,7 +32,7 @@ export default function Home() {
                     <div>
                         <Filters />
                     </div>
-                    <div>
+                    <div className={c.container}>
                         {
                             pokemon?.length > 0 ?
                             pokemon.map(e => 

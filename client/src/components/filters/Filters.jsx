@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { orderByAttack, orderByName, orderByType, orderByOrigin } from "../../redux/actions";
+import c from "./Filter.module.css";
 
 export default function Filters() {
 
@@ -31,26 +32,26 @@ export default function Filters() {
     }
 
     return (
-        <div>
-            <select defaultValue="Alphabetical order"
+        <div className={c.container}>
+            <select className={c.select} defaultValue="Alphabetical order"
             onChange={e => handlerByName(e)}>
                 <option value='DEFAULT'>Order by Name</option>
                 <option value='ASC'>A - Z</option>
                 <option value='DES'>Z - A</option>
             </select>
-            <select defaultValue="Select Attack"
+            <select className={c.select} defaultValue="Select Attack"
             onChange={e => handlerByAttack(e)}>
                 <option value='DEFAULT'>Order by Attack</option>
                 <option value='ASC'>Ascendent</option>
                 <option value='DES'>Descendent</option>
             </select>
-            <select  defaultValue="Origin"
+            <select className={c.select}  defaultValue="Origin"
             onChange={e => handlerByOrigin(e)}>
                 <option value='ALL'>Filter by Created</option>
                 <option value='API'>Existing</option>
                 <option value='CREATED'>Created</option>
             </select>
-            <select defaultValue="All Types"
+            <select className={c.select} defaultValue="All Types"
             onChange={e => handlerByType(e)}>
                 <option value='ALL'>All Types</option>
                 { types?.map((t, id) => {

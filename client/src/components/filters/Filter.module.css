@@ -1,0 +1,14 @@
+.container {
+    position: relative;
+}
+
+.select {
+    margin-right: 8px;
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.select:hover {
+    background: #28355ac0;
+    color: white;
+}
