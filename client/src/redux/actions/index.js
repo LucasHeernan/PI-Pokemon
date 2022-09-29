@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
-SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE } from '../actionTypes';
+SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_FILTER, CLEAR_ALL } from '../actionTypes';
 
 export function getAllPokemons() {
     return async (dispatch) => {
@@ -70,6 +70,18 @@ export function getTypes() {
             console.log(err)
         }
     }
+}
+
+export function clearFilter() {
+    return { type: CLEAR_FILTER, payload: [] }
+}
+
+export function clearDetail() {
+    return { type: CLEAR_DETAIL, payload: [] }
+}
+
+export function clearAll() {
+    return { type: CLEAR_ALL, payload: [] }
 }
 
 export function orderByAttack(payload) {

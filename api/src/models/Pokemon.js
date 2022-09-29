@@ -33,15 +33,7 @@ module.exports = (sequelize) => {
     },
     img: {
       type: DataTypes.TEXT,
-    },
-    imgId: {
-      type: DataTypes.TEXT,
-    },
-    created: { 
-			type: DataTypes.BOOLEAN,
-			allowNull: false,
-			defaultValue: true
-		}
+    }
   },
   {
     timestamps: false

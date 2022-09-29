@@ -1,16 +1,20 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPokemonByName } from "../../redux/actions";
+import { getPokemonByName, clearDetail, clearFilter } from "../../redux/actions";
 import c from "./Detail.module.css";
 
 export default function Details() {
     const { name } = useParams();
     const dispatch = useDispatch();
-    const { details } = useSelector(store => store);
+    const { details, all } = useSelector(store => store);
 
     useEffect(() => {
-        dispatch(getPokemonByName(name))
+        dispatch(getPokemonByName(name));
+        return () => {
+            dispatch(clearDetail());
+            dispatch(clearFilter());
+        }
     }, [dispatch, name])
 
     return (
@@ -23,7 +27,7 @@ export default function Details() {
                     <div>
                         <h2 className={c.title}>{details.name}</h2>
                         <img className={c.img} src={details.img} alt="poke"/>
-                        <p className={c.id}>{details.id}</p>
+                        <p className={c.id}>{typeof details.id === "number" ? details.id : all.length}</p>
                     </div>
                     <section>
                         <p>Life {details.hp}</p>

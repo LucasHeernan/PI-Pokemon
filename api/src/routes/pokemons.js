@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { Pokemons, Types } = require('../db');
-const { Op } = require ('sequelize');
 const { getApiPokemons, getApiPokemonById, getApiPokemonByName } = require('../controllers/getsApi');
 const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../controllers/getsDb');
 
@@ -14,18 +13,23 @@ router.get('/', async (req, res, next) => {
         try {
             result = await getPokemonByNameDb(name);
             if ( result === null ) result = await getApiPokemonByName(name);
-            res.status(200).json(result)
+            return res.status(200).json(result)
         } catch (err) {
             res.status(400).send(`The pokemon ${name} has not been found`)
             next(err);
         }
     } else {
-        /* ACA ENTRA SI NO RECIBE NOMBRE */
         try {
+            let all;
             result = await getApiPokemons();
             let pokemonDb = await getPokemonsDb();
-            let all = [...result, ...pokemonDb]
-            res.status(200).json(all);
+            if ( pokemonDb.length > 0 ) {
+                all = [...result, ...pokemonDb]
+                return res.status(200).json(all);
+            } else {
+                all = result;
+                return res.status(200).json(all);
+            }
         } catch (err) {
             res.status(400).send(`Couldn't fetch any items`);
             next(err);
@@ -52,9 +56,10 @@ router.get('/:id', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    const { name, hp, attack, defense, speed, height, weight, types } = req.body;
+    const { name, hp, attack, defense, speed, height, weight, img, id, types } = req.body;
+    const short = name.toLowerCase()
     try {
-        let newPokemon = await Pokemons.create({name, hp, attack, defense, speed, height, weight, types});
+        let newPokemon = await Pokemons.create({name: short, hp, attack, defense, speed, height, weight, img, id, types});
         let typeDb = await Types.findAll({ where: { name: types } });
         await newPokemon.addTypes(typeDb);
         res.status(200).json(newPokemon);
@@ -64,60 +69,12 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-// CREA O ENCUENTRA SI YA EXISTE
-// router.post('/', async (req, res, next) => {
-//     const { name, hp, attack, defense, speed, height, weight, types } = req.body;
-//     const short = name.toLowerCase()
-//     try {
-//         let [pokemon, created ] = await Pokemons.findOrCreate({
-//             where: { name: short },
-//             defaults: { hp, attack, defense, speed, height, weight }
-//         })
-//         if (created) {
-//             let typeFind = await Types.findAll({ where: { name: {[Op.or]: types} } });
-//             await pokemon.addTypes(typeFind);
-//             return res.status(200).send(`${name} has been created successfully`);
-//         }
-//         res.status(200).send(`The pokemon ${name} already exists in the database`);
-//     } catch (err) {
-//         res.status(400).send('Something went wrong:')
-//         next(err);
-//     }
-// })
 
-// CREA SIN VERIFICAR SI YA EXISTE
-// router.post('/', async (req, res) => {
-//     const { types } = req.body;
-//     try {
-//         let newPokemon = await Pokemons.create(req.body);
-//         let typeDb = await Types.findAll({ where: { name : types } });
-//         await newPokemon.addTypes(typeDb);
-//         res.status(201).json(newPokemon);
-//     } catch (err) {
-//         console.log('Shomething malo:', err)
-//     }
-// })
 
-// REQUIRIENDO EL NOMBRE
-// router.post('/', async (req, res, next) => {
-//     try {
-//         const { name, types } = req.body;
-//         if (name) {
-//             let typeFind = await Types.findAll({
-//                 where: {
-//                     name: { types }
-//                 }
-//             })
-//             const pokemon = await Pokemons.create(req.body);
-//             await pokemon.addTypes(typeFind);
-//             res.status(200).json(pokemon);
-//         } else {
-//             res.status(200).send('No se recibieron todos los parámetros')
-//         }
-//     } catch (err) {
-//         next(err);
-//     }
-// })
+
+
+
+
 
 
     /*              ----------     PUT AND DELETE     ----------              */

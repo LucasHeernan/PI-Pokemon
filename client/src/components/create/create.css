@@ -73,12 +73,15 @@
 
 .type-lateral {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 50vw;
+    height: 50vh;
     margin-top: 10px;
 }
 
 .box-input-element {
     display: flex;
-    width: 90%;
     margin-top: 9px;
     height: 45px;
     padding: 0 40px 0 10px;

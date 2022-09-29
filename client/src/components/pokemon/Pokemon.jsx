@@ -1,13 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import c from "./Pokemon.module.css"
+import defaultImg from "./defaultImg.png";
 
-export default function Pokemon({ name, imgId, types, id}) {
+export default function Pokemon({ name, imgId, img, types, id }) {
+
     return (
         <div className={c.container}>
             <div >
-                <img className={c.img} src={imgId} alt="pokemon" />
-                <span className={c.id}>{id}</span>
+                {
+                    id.toString().length < 5 ?
+                    <div>
+                        <img className={c.img} src={imgId} alt="pokemon"/>
+                        <span className={c.id}>{id}</span>
+                    </div>  :
+                    <div>
+                        <img className={c.img} src={img ? img : defaultImg } alt="pokemon"/>
+                        <span className={c.id}>{id = 'DB'}</span>
+                    </div>
+                }
                 <Link className={c.section} to={`home/${name}`}>
                     <h2 className={c.title}>{name}</h2>
                 </Link>
