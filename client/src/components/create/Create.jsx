@@ -105,11 +105,11 @@ export default function Create() {
                 setInput({
                 ...input,
                 types: [...input.types, e.target.value],
-                })
+                });
                 setErr(validate(input));
             }
         }
-    } 
+    }
 
     useEffect(() => {
         types.length < 2 && dispatch(getTypes());

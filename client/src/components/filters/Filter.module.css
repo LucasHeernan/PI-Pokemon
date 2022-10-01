@@ -3,12 +3,16 @@
 }
 
 .select {
+    background: #143652;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
     margin-right: 8px;
     border-radius: 8px;
     padding: 4px 8px;
 }
 
 .select:hover {
-    background: #28355ac0;
+    background: #4f6979;
     color: white;
 }

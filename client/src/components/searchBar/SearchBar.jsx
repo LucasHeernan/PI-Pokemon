@@ -32,9 +32,9 @@ export default function SearchBar() {
 
     return (
         <nav className={c.container} >
-            <div>
+            <div className={c.div}>
                 <img className={c.img} src={pokeBall} alt="pokebola" />
-                <span className={c.span}>HOME</span>
+                <span className={c.span}>POKE-APP</span>
             </div>
             <Link className={c.create} to="/home/create" >
                 <span>CREATE POKEMON</span>
