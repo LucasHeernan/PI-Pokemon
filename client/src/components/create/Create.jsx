@@ -63,7 +63,8 @@ export default function Create() {
         if (!regexs.number.test(input.weight)) { err.weight = 'The required field accepts only numbers' }
 
         if (input.types.length === 0) { err.types = 'At least one kind is required' }
-        if (input.types.length === 2) { err.types = 'You can only choose 2 types per pokemon' } 
+        if (input.types.length === 1 || input.types.length === 2) { err.types = '' }
+        if (input.types.length > 2) { err.types = 'You can only choose 2 types per pokemon' } 
         return err
     }
 
@@ -93,16 +94,20 @@ export default function Create() {
             weight: null,
             img: "",
             types: []
-        })
+        });
     }
 
     function handleSelect(e) {
         if (e.target.value !== 'SELECT') {
+            if (input.types.length > 2) {
+                setErr(validate(input));
+            } else {
                 setInput({
                 ...input,
                 types: [...input.types, e.target.value],
                 })
                 setErr(validate(input));
+            }
         }
     } 
 

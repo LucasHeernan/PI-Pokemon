@@ -14,18 +14,19 @@
 
 .img {
     position: relative;
-    max-width: 100px;
-    max-height: 60px;
-    bottom: -3px;
+    max-width: 70px;
+    max-height: 40px;
+    bottom: -2px;
 }
 
 .span {
+    display: inline-block;
     color: white;
     font-size: large;
     text-decoration: none;
 }
 
-.about {
+.create {
     color: white;
     font-size: large;
     text-decoration: none;

@@ -3,11 +3,12 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPokemonByName, clearDetail, clearFilter } from "../../redux/actions";
 import c from "./Detail.module.css";
+import defaultImg from "../../images/defaultImg.png"
 
 export default function Details() {
     const { name } = useParams();
     const dispatch = useDispatch();
-    const { details, all } = useSelector(store => store);
+    const { details } = useSelector(store => store);
 
     useEffect(() => {
         dispatch(getPokemonByName(name));
@@ -26,8 +27,8 @@ export default function Details() {
                 <div className={c.items}>
                     <div>
                         <h2 className={c.title}>{details.name}</h2>
-                        <img className={c.img} src={details.img} alt="poke"/>
-                        <p className={c.id}>{typeof details.id === "number" ? details.id : all.length}</p>
+                        <img className={c.img} src={details.img ? details.img : defaultImg} alt="poke"/>
+                        <p className={c.id}>{typeof details.id === "number" ? details.id : `DATABASE`}</p>
                     </div>
                     <section>
                         <p>Life {details.hp}</p>

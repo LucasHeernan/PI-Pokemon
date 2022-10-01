@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import c from "./Pokemon.module.css"
-import defaultImg from "./defaultImg.png";
+import defaultImg from "../../images/defaultImg.png";
 
 export default function Pokemon({ name, imgId, img, types, id }) {
 

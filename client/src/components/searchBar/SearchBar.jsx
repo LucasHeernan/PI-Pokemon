@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import c from "./SearchBar.module.css";
 import { Link, useHistory } from "react-router-dom";
+import pokeBall from "../../images/pokeBall.png";
 
 
 export default function SearchBar() {
@@ -32,11 +33,10 @@ export default function SearchBar() {
     return (
         <nav className={c.container} >
             <div>
-                <Link className={c.span} to='/home'>
-                    <span>HOME</span>
-                </Link>
+                <img className={c.img} src={pokeBall} alt="pokebola" />
+                <span className={c.span}>HOME</span>
             </div>
-            <Link className={c.about} to="/home/create" >
+            <Link className={c.create} to="/home/create" >
                 <span>CREATE POKEMON</span>
             </Link>
             <form onSubmit={(e) => handleSubmit(e)}>

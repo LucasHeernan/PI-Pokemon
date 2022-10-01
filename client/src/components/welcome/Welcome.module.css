@@ -1,7 +1,7 @@
 .App {
     display: flex;
     flex-direction: column;
-    background-image: url("../../portada_pokemon-peliculas.jpeg");
+    background-image: url("../../images/portada_pokemon-peliculas.jpeg");
     background-size: cover;
     min-height: 100vh;
   }

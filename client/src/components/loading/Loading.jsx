@@ -1,13 +1,13 @@
 import React from 'react';
 import c from "./Loading.module.css";
-import pika from "./loadingPika.gif";
+import loadingPika from "../../images/loadingPika.gif";
 
 
 export default function Loading() {
 
     return (
         <div className={c.loading}>
-            <img src={pika} alt="recalculando"/>
+            <img src={loadingPika} alt="recalculando"/>
         </div>
     )
 }
