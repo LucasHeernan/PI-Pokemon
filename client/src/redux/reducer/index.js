@@ -3,7 +3,7 @@ SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_
 
 const initialState = {
     all: [],
-    pokemon: [],
+    pokemons: [],
     details: [],
     types: [],
     created: {}
@@ -14,7 +14,8 @@ const pokeReducer = ( state = initialState, action ) => {
         case GET_ALL_POKEMONS:
             return {
                 ...state,
-                all: state.all.length > 1 ? state.all : action.payload,
+                // all: state.all.length > 1 ? state.all : action.payload,
+                all: state.all.length ? [...state.all, ...action.payload] : action.payload,
             }
         case GET_POKEMON_BY_ID:
             return {
@@ -44,7 +45,7 @@ const pokeReducer = ( state = initialState, action ) => {
         case CLEAR_FILTER:
             return {
                 ...state,
-                pokemon: []
+                pokemons: []
             }
         case CLEAR_ALL:
             return {
@@ -60,7 +61,7 @@ const pokeReducer = ( state = initialState, action ) => {
             })
             return {
                 ...state,
-                pokemon: action.payload === 'DEFAULT' ? state.all : attack,
+                pokemons: action.payload === 'DEFAULT' ? state.all : attack,
             }
         case SORT_BY_NAME:
             let abc = [...state.all]
@@ -71,14 +72,14 @@ const pokeReducer = ( state = initialState, action ) => {
             })
             return {
                 ...state,
-                pokemon: action.payload === 'DEFAULT' ? state.all : abc
+                pokemons: action.payload === 'DEFAULT' ? state.all : abc
             }
         case SORT_BY_ORIGIN:
             const origin = action.payload === 'CREATED' ?
             state.all.filter(e => typeof e.id === 'string') : state.all.filter(e => typeof e.id === 'number')
             return {
                 ...state,
-                pokemon: action.payload === 'ALL' ? state.all : origin
+                pokemons: action.payload === 'ALL' ? state.all : origin
             }
         case SORT_BY_TYPE:
             const allPokes = state.all;
@@ -86,7 +87,7 @@ const pokeReducer = ( state = initialState, action ) => {
             allPokes.filter(e => e.types.map(t => t.name).includes(action.payload));
             return {
                 ...state,
-                pokemon: typesFilter
+                pokemons: typesFilter
             }
         default:
             return { ...state };

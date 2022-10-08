@@ -6,7 +6,7 @@ import c from "./Detail.module.css";
 import defaultImg from "../../images/defaultImg.png"
 import esperanding from "../../images/esperanding.gif"
 
-export default function Details() {
+export default function Detail() {
     const { name } = useParams();
     const dispatch = useDispatch();
     const { details } = useSelector(store => store);

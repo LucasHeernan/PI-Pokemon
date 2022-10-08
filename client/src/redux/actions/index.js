@@ -2,10 +2,13 @@ import axios from 'axios';
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
 SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_FILTER, CLEAR_ALL } from '../actionTypes';
 
-export function getAllPokemons() {
+export function getAllPokemons(lastPoke) {
     return async (dispatch) => {
         try {
-            const data = await axios(`http://localhost:3001/pokemons`).then(e => e.data);
+            const first = await axios(`http://localhost:3001/pokemons`, { 
+                params: { lastPoke: lastPoke }
+            })
+            const data = await first.data
             return dispatch({
                 type: GET_ALL_POKEMONS,
                 payload: data

@@ -8,6 +8,7 @@ const router = Router();
 
 router.get('/', async (req, res, next) => {
     const { name } = req.query;
+    const { lastPoke } = req.body;
     let result;
     if (name) {
         try {
@@ -15,13 +16,13 @@ router.get('/', async (req, res, next) => {
             if ( result === null ) result = await getApiPokemonByName(name);
             return res.status(200).json(result)
         } catch (err) {
-            res.status(400).send(`The pokemon ${name} has not been found`)
+            res.status(404).send(`The pokemon ${name} has not been found`)
             next(err);
         }
     } else {
         try {
             let all;
-            result = await getApiPokemons();
+            result = await getApiPokemons(lastPoke);
             let pokemonDb = await getPokemonsDb();
             if ( pokemonDb.length > 0 ) {
                 all = [...result, ...pokemonDb]
@@ -31,7 +32,7 @@ router.get('/', async (req, res, next) => {
                 return res.status(200).json(all);
             }
         } catch (err) {
-            res.status(400).send(`Couldn't fetch any items`);
+            res.status(404).send(`Couldn't fetch any items`);
             next(err);
         }
     }
@@ -50,7 +51,7 @@ router.get('/:id', async (req, res, next) => {
             res.status(200).json(result);
         }
     } catch (err) {
-        res.status(400).send(`No pokemon found with that id`);
+        res.status(404).send(`No pokemon found with that id`);
         next(err);
     }
 });
@@ -59,10 +60,12 @@ router.post('/', async (req, res, next) => {
     const { name, hp, attack, defense, speed, height, weight, img, id, types } = req.body;
     const short = name.toLowerCase()
     try {
+        // ACÁ TENGO QUE PONER UNA CONDICIÓN DE QUE NO LO CREE SI YA EXISTE ESE NOMBRE
         let newPokemon = await Pokemons.create({name: short, hp, attack, defense, speed, height, weight, img, id, types});
         let typeDb = await Types.findAll({ where: { name: types } });
         await newPokemon.addTypes(typeDb);
         res.status(200).json(newPokemon);
+        // Y QUE SI ES ASÍ ME DIGA QUE YA EXISTE UN POKEMON CON ESE NOMBRE
     } catch (err) {
         res.status(400).send('Something went wrong');
         next(err);
