@@ -8,7 +8,6 @@ const router = Router();
 
 router.get('/', async (req, res, next) => {
     const { name } = req.query;
-    const { lastPoke } = req.body;
     let result;
     if (name) {
         try {
@@ -22,7 +21,7 @@ router.get('/', async (req, res, next) => {
     } else {
         try {
             let all;
-            result = await getApiPokemons(lastPoke);
+            result = await getApiPokemons();
             let pokemonDb = await getPokemonsDb();
             if ( pokemonDb.length > 0 ) {
                 all = [...result, ...pokemonDb]

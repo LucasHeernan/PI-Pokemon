@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getPokemonByName, clearDetail/* , clearFilter  */} from "../../redux/actions";
+import { getPokemonByName, clearDetail} from "../../redux/actions";
 import c from "./Detail.module.css";
 import defaultImg from "../../images/defaultImg.png"
 import esperanding from "../../images/esperanding.gif"
@@ -9,13 +9,12 @@ import esperanding from "../../images/esperanding.gif"
 export default function Detail() {
     const { name } = useParams();
     const dispatch = useDispatch();
-    const { details } = useSelector(store => store);
+    const { detail } = useSelector(store => store);
 
     useEffect(() => {
         dispatch(getPokemonByName(name));
         return () => {
             dispatch(clearDetail());
-            // dispatch(clearFilter());
         }
     }, [dispatch, name])
 
@@ -25,31 +24,36 @@ export default function Detail() {
                 <button className={c.btnBackHome}>Back to home!</button>
             </Link>
             {
-                details.length < 1 ? <img src={esperanding} alt="wait" width={400} /> :
-                <div className={c.container}>
-                    <div className={c.items}>
-                        <div>
-                            <h2 className={c.title}>{details.name}</h2>
-                            <img className={c.img} src={details.img ? details.img : defaultImg} alt="poke"/>
-                            <p className={c.id}>{typeof details.id === "number" ? details.id : `DATABASE`}</p>
-                        </div>
-                        <section>
-                            <p>Life {details.hp}</p>
-                            <p>Attack {details.attack}</p>
-                            <p>Defense {details.defense}</p>
-                            <p>Speed {details.speed}</p>
-                            <p>Height {details.height}</p>
-                            <p>Weight {details.weight}</p>
-                            <p>Types</p>
-                            <div className={c.detail}>
-                                {
-                                    details.types?.map((type, i) => (
-                                        <span className={c.span} key={i}>{ type.name }</span>
-                                    ))
-                                }
+                detail.length < 1 ? <img src={esperanding} alt="wait" width={400} /> :
+                <div>
+                    {
+                        detail.err ? <h2>{detail.err}</h2> :
+                        <div className={c.container}>
+                            <div className={c.items}>
+                                <div>
+                                    <h2 className={c.title}>{detail.name}</h2>
+                                    <img className={c.img} src={detail.img ? detail.img : defaultImg} alt="poke"/>
+                                    <p className={c.id}>{typeof detail.id === "number" ? detail.id : `DATABASE`}</p>
+                                </div>
+                                <section>
+                                    <p>Life {detail.hp}</p>
+                                    <p>Attack {detail.attack}</p>
+                                    <p>Defense {detail.defense}</p>
+                                    <p>Speed {detail.speed}</p>
+                                    <p>Height {detail.height}</p>
+                                    <p>Weight {detail.weight}</p>
+                                    <p>Types</p>
+                                    <div className={c.detail}>
+                                        {
+                                            detail.types?.map((type, i) => (
+                                                <span className={c.span} key={i}>{ type.name }</span>
+                                            ))
+                                        }
+                                    </div>
+                                </section>
                             </div>
-                        </section>
-                    </div>
+                        </div>
+                    }
                 </div>
             }
         </div>

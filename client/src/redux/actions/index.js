@@ -2,13 +2,10 @@ import axios from 'axios';
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
 SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_FILTER, CLEAR_ALL } from '../actionTypes';
 
-export function getAllPokemons(lastPoke) {
+export function getAllPokemons() {
     return async (dispatch) => {
         try {
-            const first = await axios(`http://localhost:3001/pokemons`, { 
-                params: { lastPoke: lastPoke }
-            })
-            const data = await first.data
+            const data = await axios(`http://localhost:3001/pokemons`).then(e => e.data);
             return dispatch({
                 type: GET_ALL_POKEMONS,
                 payload: data
@@ -54,9 +51,16 @@ export function getPokemonByName(name) {
             return dispatch({
                 type: GET_POKEMON_BY_NAME,
                 payload: data
-            })
+            });
         } catch (err) {
-            console.log(err)
+            dispatch({
+                type: GET_POKEMON_BY_NAME,
+                payload: {
+                    err: 'NO SE ENCONTRO NINGÚN POKEMON CON ESE NOMBRE',
+                    img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/4.svg",
+                    imgId: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
+                }
+            });
         }
     }
 }

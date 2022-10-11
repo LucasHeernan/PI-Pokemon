@@ -31,6 +31,7 @@
     font-size: 1rem;
     border-radius: 0.25rem;
 }
+
 .btnCreate {
     display: inline-block;
     font-weight: 400;
@@ -50,7 +51,7 @@
     border-radius: 0.25rem;
 }
 
-.formulario {
+.form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
@@ -60,35 +61,18 @@
     padding: 40px;    
 }
 
-.formulario__label {
+.formLabel {
     display: block;
     font-weight: 300;
     padding: 10px;
     cursor: pointer;
 }
 
-.formulario__grupo-input {
+.divFInput {
     position: relative;
 }
 
-.type-lateral {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    width: 50vw;
-    height: 50vh;
-    margin-top: 10px;
-}
-
-.box-input-element {
-    display: flex;
-    margin-top: 9px;
-    height: 45px;
-    padding: 0 40px 0 10px;
-    transition: .3s ease all;
-}
-
-.formulario__input {
+.formInput {
     width: 90%;
     background: #fff;
     border: 1px solid #353535;
@@ -99,52 +83,47 @@
     transition: .3s ease all;
 }
 
-.formulario__input:focus {
+.formInput:focus {
     border: 3px solid #0075ff;
     outline: none;
     box-shadow: 3px 0px 30px rgba(163,163,163 ,0.4);
 }
 
-
-.formulario__inputD {
-    position: relative;
-    width: 100%;
-    background: #fff;
-    border: 8px solid transparent;
-    border-radius: 10px;
-    height: 45px;
-    line-height: 45px;
-    padding: 0 40px 0 10px;
-    transition: .3s ease all;
-    height: 74px; 
-    width: 685px;
-}
-
-.formulario__inputD:focus {
-    border: 3px solid #0075ff;
-    outline: none;
-    box-shadow: 3px 0px 30px rgba(163,163,163 ,0.4);
-}
-
-.formulario__input-error {
-    font-size: 14px;
-    margin-bottom: 0;
-    font: bold;
-    color: #dc3545;
-}
-
-.formulario__input-error-activo {
-    display: block;
-}
-
-
-.formulario__validacion-estado {
+.formEstate {
     position: absolute;
     left: 100px;
     bottom: 15px;
     z-index: 100; 
     font-size: 13px;
     opacity: 0;
+}
+
+.inputError {
+    font-size: 14px;
+    margin-bottom: 0;
+    font: bold;
+    color: #dc3545;
+}
+
+.inputError-ctive {
+    display: block;
+}
+
+.typeLateral {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 50vw;
+    height: 50vh;
+    margin-top: 10px;
+}
+
+.typeElement {
+    display: flex;
+    margin-top: 9px;
+    height: 45px;
+    padding: 0 40px 0 10px;
+    transition: .3s ease all;
 }
 
 .butonChackRed {
@@ -169,4 +148,24 @@
 	margin-right: 10px;
 	margin-bottom: 22px;
 	color: #fff;
+}
+
+.formulario__inputD {
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border: 8px solid transparent;
+    border-radius: 10px;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 40px 0 10px;
+    transition: .3s ease all;
+    height: 74px; 
+    width: 685px;
+}
+
+.formulario__inputD:focus {
+    border: 3px solid #0075ff;
+    outline: none;
+    box-shadow: 3px 0px 30px rgba(163,163,163 ,0.4);
 }

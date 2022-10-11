@@ -24,6 +24,7 @@ export default function Home() {
 
     //    ARRAY DEL PAGINADO ACTUAL
     const currentPokes = all.slice(firstPoke, lastPoke);
+    const currentFilters = pokemons.length > 0 ? pokemons.slice(firstPoke, lastPoke) : null;
 
     function paginated(page) {
         setCurrentPage(page)
@@ -54,22 +55,22 @@ export default function Home() {
                         <SearchBar />
                     </div>
                     <div>
-                        <Filters />
+                        <Filters setCurrentPage={setCurrentPage} />
                     </div>
                     <div>
                         <Paginated
                             pokesPerPage={pokesPerPage}
+                            currentPage={currentPage}
                             paginated={paginated}
                             handlePrev={handlePrev}
                             handleNext={handleNext}
-                            lastPoke={lastPoke}
                         />
                     </div>
                     <div className={c.container}>
                         {
-                            /* pokemon lo uso para los filtrados??? */
+                            /* pokemon lo uso para los filtrados */
                             pokemons?.length > 0 ?
-                            pokemons.map(e =>
+                            currentFilters.map(e =>
                                 <div key={e.id}>
                                     <Pokemon
                                         name={e.name}
@@ -80,8 +81,7 @@ export default function Home() {
                                     />
                                 </div>
                             ) :
-                            /* all lo voy a usar para el paginado??? */
-                            /* ahora debería mapear el array de paginado */
+                            /* all lo voy a usar para el paginado */
                             currentPokes?.map(e =>
                                 <div key={e.id}>
                                     <Pokemon

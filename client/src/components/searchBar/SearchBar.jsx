@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import c from "./SearchBar.module.css";
 import { Link, useHistory } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import { getPokemonByName } from "../../redux/actions";
 import pokeBall from "../../images/pokeBall.png";
 
 
 export default function SearchBar() {
     
     const history = useHistory();
+    // const dispatch = useDispatch();
     const [poke, setPoke] = useState('');
 
     function valid (text) {

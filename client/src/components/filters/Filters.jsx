@@ -1,34 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { orderByAttack, orderByName, orderByType, orderByOrigin } from "../../redux/actions";
 import c from "./Filter.module.css";
 
-export default function Filters() {
+export default function Filters({ setCurrentPage }) {
 
     const dispatch = useDispatch();
     const { types } = useSelector(state => state);
-    const [click, setClick] = useState('');
 
     function handlerByName(e) {
         e.preventDefault();
         dispatch(orderByName(e.target.value));
-        setClick(e.target.value);
+        setCurrentPage(1);
     }
 
     function handlerByAttack(e) {
         e.preventDefault();
         dispatch(orderByAttack(e.target.value));
-        setClick(e.target.value);
+        setCurrentPage(1);
     }
 
     function handlerByOrigin(e) {
         e.preventDefault();
         dispatch(orderByOrigin(e.target.value));
+        setCurrentPage(1);
     }
 
     function handlerByType(e) {
         e.preventDefault();
         dispatch(orderByType(e.target.value));
+        setCurrentPage(1);
     }
 
     return (

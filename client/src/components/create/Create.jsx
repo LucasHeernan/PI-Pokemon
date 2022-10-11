@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./create.css";
+import c from "./Create.module.css";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { postPokemon, getTypes, clearFilter, clearAll } from "../../redux/actions";
@@ -12,19 +12,19 @@ export default function Create() {
     const [err, setErr] = useState({});
     const [input, setInput] = useState({
         name: "",
-        hp: null,
-        attack: null,
-        defense: null,
-        speed: null,
-        height: null,
-        weight: null,
+        hp: "",
+        attack: "",
+        defense: "",
+        speed: "",
+        height: "",
+        weight: "",
         img: "",
         types: []
     });
 
     
     const regexs = {
-        name: /^[ A-Za-z_@./#&+-]{3,20}$/,
+        name: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]{3,25}$/,
         image_url: /[(http(s)?)://(www.)?a-zA-Z0-9@:%.+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%+.~#?&//=]*){0,255}$/,
         number: /^\d+$/
     }
@@ -34,13 +34,13 @@ export default function Create() {
 
         if (!input.name) { err.name = "Name is required" }
         if (!regexs.name.test(input.name.trim())) {
-        err.name = 'The name must be text type and must be between 3 and 20 characters' }
+        err.name = 'The name only accepts letters and must be between 3 and 25 characters' }
 
         if (!input.hp) { err.hp = "HP is required" }
         if (input.hp < 0 || input.hp > 200) { err.hp = 'Must be between 0 and 200' }
         if (!regexs.number.test(input.hp)) { err.hp = 'The required field accepts only numbers' }
 
-        if (!regexs.image_url.test(input.img)) { err.img = "Enter a valid URL or is going to be our default img" }
+        if (!regexs.image_url.test(input.img)) { input.img && (err.img = "Enter a valid URL or is going to be our default img") }
 
         if (!input.attack) { err.attack = 'Attack is required' }
         if (input.attack < 0 || input.attack > 200) { err.attack = 'Attack must be between 0 and 200' }
@@ -63,7 +63,6 @@ export default function Create() {
         if (!regexs.number.test(input.weight)) { err.weight = 'The required field accepts only numbers' }
 
         if (input.types.length === 0) { err.types = 'At least one kind is required' }
-        if (input.types.length === 1 || input.types.length === 2) { err.types = '' }
         if (input.types.length > 2) { err.types = 'You can only choose 2 types per pokemon' } 
         return err
     }
@@ -122,182 +121,207 @@ export default function Create() {
     return (
         <div>
             <br/>
-            <div className="divBtnCreate">
+            <div className={c.divBtnCreate}>
                 <Link to="/home">
-                    <button className="btnBackCreate">Back to home!</button>
+                    <button className={c.btnBackCreate}>Back to home!</button>
                 </Link>
             </div>
             <div>
                 <br/>
-                <h2 className="h2">
+                <h2 className={c.h2}>
                     CREATE YOUR POKEMON
                 </h2>
                 
                 <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className="formulario">
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Name:</label>
-                            <div className="formulario__grupo-input">
+                    <div className={c.form}>
+                        <div >
+                            <label className={c.formLabel}>Name:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
-                                    type="text"    
-                                    name="name" 
-                                    placeholder="escribe el nombre del Pokemon"
+                                    className={c.formInput}
+                                    type="text"
+                                    name="name"
+                                    value={input.name}
+                                    placeholder="Nombre del pokemon"
                                     required
                                 />
-                                <i className="formulario__validacion-estado" ></i>    
                             </div>
-                            {err.name && ( <p className="formulario__input-error"  >{err.name}</p> )}
+                            {err.name && ( <p className={c.inputError} >{err.name}</p> )}
                         </div>
 
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Hp:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Hp:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="hp"
+                                    value={input.hp}
                                     min="0"
                                     max="200"
-                                    placeholder="120"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.hp && ( <p className="formulario__input-error">{err.hp}</p> )}
+                            {err.hp && ( <p className={c.inputError}>{err.hp}</p> )}
                         </div>
 
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Image URL:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Image URL:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="url"
                                     name="img"
+                                    value={input.img}
                                     id="image"
-                                    placeholder="URL of the Pokemon image"
+                                    placeholder="Enter the URL of an image or be created with a default image"
                                 />
-                                <i className="formulario__validacion-estado" ></i>
                             </div>
-                            {err.img && ( <p className="formulario__input-error" >{err.img}</p> )}
+                            {err.img && ( <p className={c.inputError} >{err.img}</p> )}
                         </div>
 
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Height:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Height:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="height"
+                                    value={input.height}
                                     min="0"
                                     max="200"
-                                    placeholder="50"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.height && ( <p className="formulario__input-error">{err.height}</p> )}
+                            {err.height && ( <p className={c.inputError}>{err.height}</p> )}
                         </div>
 
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Weight:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Weight:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="weight"
+                                    value={input.weight}
                                     min="0"
                                     max="9999"
-                                    placeholder="350"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.weight && ( <p className="formulario__input-error">{err.weight}</p> )}
+                            {err.weight && ( <p className={c.inputError}>{err.weight}</p> )}
                         </div>
         
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Attack:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Attack:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="attack"
+                                    value={input.attack}
                                     min="0"
                                     max="200"
-                                    placeholder="40"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.attack && ( <p className="formulario__input-error">{err.attack}</p> )}
+                            {err.attack && ( <p className={c.inputError}>{err.attack}</p> )}
                         </div>
 
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">Defense:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>Defense:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="defense"
+                                    value={input.defense}
                                     min="0"
                                     max="200"
-                                    placeholder="90"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.defense && ( <p className="formulario__input-error">{err.defense}</p> )}
+                            {err.defense && ( <p className={c.inputError}>{err.defense}</p> )}
                         </div>
         
-                        <div className="formulario__grupo">
-                            <label className="formulario__label">speed:</label>
-                            <div className="formulario__grupo-input">
+                        <div >
+                            <label className={c.formLabel}>speed:</label>
+                            <div className={c.divFInput}>
                                 <input
                                     onChange={(e) => handleChange(e)}
-                                    className="formulario__input"
+                                    className={c.formInput}
                                     type="number"
                                     name="speed"
+                                    value={input.speed}
                                     min="0"
                                     max="200"
-                                    placeholder="120"
+                                    placeholder="0"
                                     required
                                 />
-                                <i className="formulario__validacion-estado"  ></i>
                             </div>
-                            {err.speed && ( <p className="formulario__input-error">{err.speed}</p> )}
+                            {err.speed && ( <p className={c.inputError}>{err.speed}</p> )}
                         </div>
                         
-                        <div className="formulario_flex">
-                            <div id="types">
-                                <label onChange={e => handleSelect(e)}>
-                                <option value={'SELECT'}>Select types</option>
-                                    {   
+                        {/* ..... TIPOS ..... */}
+                        <div>
+                            <div>
+                                <label className={c.formLabel}>types: </label>
+                                <select
+                                    className={c.formInput}
+                                    onChange={(e) => handleSelect(e)}
+                                >
+                                <option disabled={input.types.length > 0}>Select Type</option>
+                                    {
                                         types?.map((e, i) => (
-                                            <label key={i}><input type="checkbox" value={e.name}/>{e.name}</label>
+                                            <option key={i}><input value={e.name}/>{e.name}</option>
                                         ))
                                     }
-                                </label>
+                                </select>
+                                
                             </div>
-                            {err.types && ( <p className="formulario__input-error" >{err.types}</p> )}
+                            {err.types && ( <p className={c.inputError} >{err.types}</p> )}
+                        </div>
+
+                        {/* ..... TIPOS SELECCIONADOS ..... */}
+                        <div>
+                            <div>
+                                <div className={c.formLabel}>
+                                    <label>types selected:</label>
+                                    <br/>
+                                    <div className={c.typeLateral}>
+                                        {input.types?.map((element, i) =>
+                                        <div key={i} className={c.typeElement}>
+                                            <span> {element} </span>
+                                            <button
+                                                type="reset"
+                                                // onClick={ ()=> handleDeleteTypes(element) }
+                                            >X</button>
+                                        </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
         
                     <div className="formulario__grupo-btn-enviar">
-                        {/* <Link to='/home'> */}
-                            <button 
+                        <button 
                             type="submit" 
-                            className="btnCreate"
-                            >Create Pokemon</button>
-                            <p className="formulario__mensaje-exito" id="formulario__mensaje-exito"></p>
-                        {/* </Link> */}
+                            className={c.btnCreate}
+                        >Create Pokemon</button>
+                        <p className="formulario__mensaje-exito" id="formulario__mensaje-exito"></p>
                     </div>
                 </form>
             </div>
@@ -306,3 +330,19 @@ export default function Create() {
         </div>
     )
 }
+
+
+// {/* ..... TIPOS ..... */}
+// <div>
+// <div>
+//     <label  onChange={e => handleSelect(e)}>
+//     <option value={'SELECT'}>Select types</option>
+//         {
+//             types?.map((e, i) => (
+//                 <label key={i}><input type="checkbox" value={e.name}/>{e.name}</label>
+//             ))
+//         }
+//     </label>
+// </div>
+// {err.types && ( <p className={c.inputError} >{err.types}</p> )}
+// </div>
