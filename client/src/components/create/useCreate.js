@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTypes, postPokemon } from "../../redux/actions";
+import { getTypes, postPokemon, clearFilter } from "../../redux/actions";
 
-export const useForm = (initialForm, validateForm) => {
+export const useCreate = (initialForm, validate) => {
 
     const dispatch = useDispatch();
     const { types } = useSelector(state => state);
@@ -11,8 +11,6 @@ export const useForm = (initialForm, validateForm) => {
 
     const [form, setForm] = useState(initialForm);
     const [errors, setErrors] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [response, setResponse] = useState(null);
 
     const handleChange = (e) => {
         setForm({
@@ -23,7 +21,7 @@ export const useForm = (initialForm, validateForm) => {
 
     const handleError = (e) => {
         handleChange(e);
-        setErrors(validateForm(form));
+        setErrors(validate(form));
     };
 
     const handleSelect = (e) => {
@@ -33,38 +31,39 @@ export const useForm = (initialForm, validateForm) => {
                     ...form,
                     types: [...form.types, e.target.value],
                 });
-                setErrors(validateForm(form));
+                setErrors(validate(form));
             }
         }
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = (type) => {
         setForm({
             ...form,
-            types: form.types.filter(e => e !== e)
+            types: form.types.filter(e => e !== type)
         })
     }
 
     useEffect(() => {
-        dispatch(getTypes())
-    }, [dispatch])
+        types.length < 2 && dispatch(getTypes());
+        return () => {
+            dispatch(clearFilter());
+        }
+    }, [dispatch, types])
 
-    const  handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
-        setErrors(validateForm(form))
+        setErrors(validate(form))
         if(!form.types.length){
             alert('Need to add at least one type of Pokemon')
         } else {
-            if (Object.keys(errors).length === 0) {
-                alert ("submitting form");
+            if (Object.keys(errors).length) {
                 dispatch(postPokemon(form))
                     .then((res) => {
-                    console.log(res)
                     history.push('/home')
-                    alert(res)
                 })
+                alert ("Your pokemon has been successfully created");
             } else {
-                alert ('missing data or errors in data loading')
+                alert ('Missing data or errors in data loading')
             }
         }
     }
@@ -72,12 +71,11 @@ export const useForm = (initialForm, validateForm) => {
     return {
         form,
         errors,
-        loading,
-        response,
+        types,
         handleChange,
         handleError,
         handleSelect,
         handleDelete,
-        handleSubmit,
+        handleSubmit
     };
 };
