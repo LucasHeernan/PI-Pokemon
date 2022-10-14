@@ -1,8 +1,8 @@
-import React from "react";
-import { useCreate } from "./useCreate.js"
+import React, { useState, useEffect } from "react";
 import c from "./Create.module.css";
-import { Link } from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getTypes, clearHome, postPokemon } from "../../redux/actions";
 
 const regexs = {
     name: /^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]{3,25}$/,
@@ -11,46 +11,48 @@ const regexs = {
 }
 
 const validate = (input) => {
-    let errors = {};
 
-    if (!input.name) { errors.name = "Name is required" }
+    if (!input.name) { input.errors.name = "Name is required" }
     if (!regexs.name.test(input.name.trim())) {
-    errors.name = 'The name only accepts letters and must be between 3 and 25 characters' }
+    input.errors.name = 'The name only accepts letters and must be between 3 and 25 characters' }
 
-    if (!input.hp) { errors.hp = "HP is required" }
-    if (input.hp < 0 || input.hp > 200) { errors.hp = 'Must be between 0 and 200' }
-    if (!regexs.number.test(input.hp)) { errors.hp = 'The required field accepts only numbers' }
+    if (!input.hp) { input.errors.hp = "HP is required" }
+    if (input.hp < 0 || input.hp > 200) { input.errors.hp = 'Must be between 0 and 200' }
+    if (!regexs.number.test(input.hp)) { input.errors.hp = 'The required field accepts only numbers' }
 
-    if (!regexs.image_url.test(input.img)) { input.img && (errors.img = "Enter a valid URL or is going to be our default img") }
+    if (!regexs.image_url.test(input.img)) { input.img && (input.errors.img = "Enter a valid URL or is going to be our default img") }
 
-    if (!input.attack) { errors.attack = 'Attack is required' }
-    if (input.attack < 0 || input.attack > 200) { errors.attack = 'Attack must be between 0 and 200' }
-    if (!regexs.number.test(input.attack)) { errors.attack = 'The required field accepts only numbers' }
+    if (!input.attack) { input.errors.attack = 'Attack is required' }
+    if (input.attack < 0 || input.attack > 200) { input.errors.attack = 'Attack must be between 0 and 200' }
+    if (!regexs.number.test(input.attack)) { input.errors.attack = 'The required field accepts only numbers' }
 
-    if (!input.defense) { errors.defense = 'Defense is required' }
-    if (input.defense < 0 || input.defense > 200) { errors.defense = 'Defense must be between 0 and 200' }
-    if (!regexs.number.test(input.defense)) { errors.defense = 'The required field accepts only numbers' }
+    if (!input.defense) { input.errors.defense = 'Defense is required' }
+    if (input.defense < 0 || input.defense > 200) { input.errors.defense = 'Defense must be between 0 and 200' }
+    if (!regexs.number.test(input.defense)) { input.errors.defense = 'The required field accepts only numbers' }
 
-    if (!input.speed) { errors.speed = 'Speed is required' }
-    if (input.speed < 0 || input.speed > 200) { errors.speed = 'Speed must be between 0 and 200' } 
-    if (!regexs.number.test(input.speed)) { errors.speed = 'The required field accepts only numbers' }
+    if (!input.speed) { input.errors.speed = 'Speed is required' }
+    if (input.speed < 0 || input.speed > 200) { input.errors.speed = 'Speed must be between 0 and 200' }
+    if (!regexs.number.test(input.speed)) { input.errors.speed = 'The required field accepts only numbers' }
 
-    if (!input.height) { errors.height = "Height is required" }
-    if (input.height < 0 || input.height > 200) { errors.height = 'Height must be between 0 and 200' } 
-    if (!regexs.number.test(input.height)) { errors.height = 'The required field accepts only numbers' }
+    if (!input.height) { input.errors.height = "Height is required" }
+    if (input.height < 0 || input.height > 200) { input.errors.height = 'Height must be between 0 and 200' }
+    if (!regexs.number.test(input.height)) { input.errors.height = 'The required field accepts only numbers' }
 
-    if (!input.weight) { errors.weight = "Weight is required" }
-    if (input.weight < 0 || input.weight > 9999) { errors.weight = 'Weight must be between 0 and 9999' }
-    if (!regexs.number.test(input.weight)) { errors.weight = 'The required field accepts only numbers' }
+    if (!input.weight) { input.errors.weight = "Weight is required" }
+    if (input.weight < 0 || input.weight > 9999) { input.errors.weight = 'Weight must be between 0 and 9999' }
+    if (!regexs.number.test(input.weight)) { input.errors.weight = 'The required field accepts only numbers' }
 
-    if (input.types.length === 0) { errors.types = 'At least one kind is required' }
-    if (input.types.length > 2) { errors.types = 'You can only choose 2 types per pokemon' } 
-    return errors
+    if (input.types.length === 0) { input.errors.types = 'At least one kind is required' }
+    if (input.types.length > 2) { input.errors.types = 'You can only choose 2 types per pokemon' }
 }
 
-export default function Create() {
+export default function CreateHenry () {
 
-    const inicialForm = {
+    const dispatch = useDispatch();
+    const { types } = useSelector(store => store);
+    const history = useHistory();
+
+    const [input, setInput] = useState({
         name: "",
         hp: "",
         attack: "",
@@ -59,27 +61,73 @@ export default function Create() {
         height: "",
         weight: "",
         img: "",
-        types: []
+        types: [],
+        errors: {
+            name: "",
+            hp: "",
+            attack: "",
+            defense: "",
+            speed: "",
+            height: "",
+            weight: "",
+            img: "",
+            types: ""
+        },
+        disabled: true
+    })
+
+    const handleChange = (e) => {
+        setInput({
+        ...input,
+        [e.target.name]: e.target.value,
+        }, validate(input));
     };
 
-    const { 
-        form,
-        errors,
-        types,
-        handleChange,
-        handleError,
-        handleSelect,
-        handleDelete,
-        handleSubmit
-    } = useCreate(inicialForm, validate)
+    const handleType = (e) => {
+        if(e.target.value !== 'Select Type') {
+            if(!input.types.includes(e.target.value)) {
+                setInput({
+                    ...input,
+                    types: [...input.types, e.target.value],
+                });
+                (validate(input));
+            }
+        }
+    }
+
+    const handleDelete = (type) => {
+        setInput({
+            ...input,
+            types: input.types.filter(e => e !== type)
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (!Object.keys(input.errors).length) {
+            dispatch(postPokemon(input)).then(res => {
+                history.push('/home');
+            });
+        } else {
+            alert ('Missing data or errors in data loading');
+        }
+    }
+
+    useEffect(() => {
+        !types.length && dispatch(getTypes());
+        return () => {
+            dispatch(clearHome());
+        }
+    }, [dispatch, types]);
 
     return (
         <div>
             <br/>
             <div className={c.divBtnCreate}>
-                <Link to="/home">
-                    <button className={c.btnBackCreate}>Back to home!</button>
-                </Link>
+                <button
+                    onClick={() => {history.push('/home')}}
+                    className={c.btnBackCreate}
+                >Back to home!</button>
             </div>
             <div>
                 <br/>
@@ -87,154 +135,170 @@ export default function Create() {
                     CREATE YOUR POKEMON
                 </h2>
                 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => handleSubmit(e)}>
                     <div className={c.form}>
                         <div >
                             <label className={c.formLabel}>Name:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="text"
                                     name="name"
-                                    value={form.name}
+                                    value={input.name}
                                     placeholder="Nombre del pokemon"
                                     required
                                 />
                             </div>
-                            {errors.name && ( <p className={c.inputError} >{errors.name}</p> )}
+                            {input.errors.name && ( <p className={c.inputError} >{input.errors.name}</p> )}
                         </div>
 
                         <div >
                             <label className={c.formLabel}>Hp:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="hp"
-                                    value={form.hp}
+                                    value={input.hp}
                                     min="0"
                                     max="200"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.hp && ( <p className={c.inputError}>{errors.hp}</p> )}
+                            {input.errors.hp && ( <p className={c.inputError}>{input.errors.hp}</p> )}
                         </div>
 
                         <div >
                             <label className={c.formLabel}>Image URL:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="url"
                                     name="img"
-                                    value={form.img}
+                                    value={input.img}
                                     id="image"
                                     placeholder="Enter the URL of an image or be created with a default image"
                                 />
                             </div>
-                            {errors.img && ( <p className={c.inputError} >{errors.img}</p> )}
+                            {input.errors.img && ( <p className={c.inputError} >{input.errors.img}</p> )}
                         </div>
 
                         <div >
                             <label className={c.formLabel}>Height:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="height"
-                                    value={form.height}
+                                    value={input.height}
                                     min="0"
                                     max="200"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.height && ( <p className={c.inputError}>{errors.height}</p> )}
+                            {input.errors.height && ( <p className={c.inputError}>{input.errors.height}</p> )}
                         </div>
 
                         <div >
                             <label className={c.formLabel}>Weight:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="weight"
-                                    value={form.weight}
+                                    value={input.weight}
                                     min="0"
                                     max="9999"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.weight && ( <p className={c.inputError}>{errors.weight}</p> )}
+                            {input.errors.weight && ( <p className={c.inputError}>{input.errors.weight}</p> )}
                         </div>
         
                         <div >
                             <label className={c.formLabel}>Attack:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="attack"
-                                    value={form.attack}
+                                    value={input.attack}
                                     min="0"
                                     max="200"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.attack && ( <p className={c.inputError}>{errors.attack}</p> )}
+                            {input.errors.attack && ( <p className={c.inputError}>{input.errors.attack}</p> )}
                         </div>
 
                         <div >
                             <label className={c.formLabel}>Defense:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="defense"
-                                    value={form.defense}
+                                    value={input.defense}
                                     min="0"
                                     max="200"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.defense && ( <p className={c.inputError}>{errors.defense}</p> )}
+                            {input.errors.defense && ( <p className={c.inputError}>{input.errors.defense}</p> )}
                         </div>
         
                         <div >
                             <label className={c.formLabel}>Speed:</label>
                             <div className={c.divFInput}>
                                 <input
+                                    // onChange={(e) =>handleChange(e)}
+                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
-                                    onBlur={handleError}
+                                    // onBlur={handleErrors}
                                     className={c.formInput}
                                     type="number"
                                     name="speed"
-                                    value={form.speed}
+                                    value={input.speed}
                                     min="0"
                                     max="200"
                                     placeholder="0"
                                     required
                                 />
                             </div>
-                            {errors.speed && ( <p className={c.inputError}>{errors.speed}</p> )}
+                            {input.errors.speed && ( <p className={c.inputError}>{input.errors.speed}</p> )}
                         </div>
 
                         
@@ -243,8 +307,10 @@ export default function Create() {
                                 <label className={c.formLabel}>Types: </label>
                                 <select
                                     className={c.formInput}
-                                    onChange={handleSelect}
-                                    onBlur={handleError}
+                                    // onChange={(e) => handleType(e)}
+                                    // onBlur={(e) => handleErrors(e)}
+                                    onChange={handleType}
+                                    // onBlur={handleErrors}
                                 >
                                     <option>Select Type</option>
                                     {
@@ -254,7 +320,7 @@ export default function Create() {
                                     }
                                 </select>
                             </div>
-                            {errors.types && ( <p className={c.inputError} >{errors.types}</p> )}
+                            {input.errors.types && ( <p className={c.inputError} >{input.errors.types}</p> )}
                         </div>
 
 
@@ -262,13 +328,13 @@ export default function Create() {
                             <label>Types Selected:</label>
                             <br/>
                             <div className={c.typeLateral}>
-                                {form.types?.map((e, i) =>
+                                {input.types?.map((e, i) =>
                                 <div key={i} className={c.typeElement}>
                                     <span>{e}</span>
                                     <button
                                         className={c.btnDelete}
                                         type="reset"
-                                        onBlur={handleError}
+                                        // onBlur={() => handleErrors(e)}
                                         onClick={()=> handleDelete(e)}
                                     >X</button>
                                 </div>
@@ -279,7 +345,7 @@ export default function Create() {
         
                     <div>
                         <button
-                            disabled={Object.keys(errors).length ? true : false}
+                            disabled={input.disabled}
                             type="submit" 
                             className={c.btnCreate}
                         >Create Pokemon</button>

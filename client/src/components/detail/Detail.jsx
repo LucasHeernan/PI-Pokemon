@@ -5,6 +5,7 @@ import { getPokemonByName, clearDetail} from "../../redux/actions";
 import c from "./Detail.module.css";
 import defaultImg from "../../images/defaultImg.png"
 import esperanding from "../../images/esperanding.gif"
+import Ups from "../../images/Ups.png"
 
 export default function Detail() {
     const { name } = useParams();
@@ -27,7 +28,13 @@ export default function Detail() {
                 detail.length < 1 ? <img src={esperanding} alt="wait" width={400} /> :
                 <div>
                     {
-                        detail.err ? <h2>{detail.err}</h2> :
+                        detail.err ?
+                        <div className={c.upsContainer}>
+                            <h2 className={c.title}>UPS!</h2>
+                            <h3>{detail.err}</h3>
+                            <img className={c.ups} src={Ups} alt="ups" />
+                        </div>
+                        :
                         <div className={c.container}>
                             <div className={c.items}>
                                 <div>

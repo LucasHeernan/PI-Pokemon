@@ -33,39 +33,37 @@
 }
 
 .btnCreate {
-    display: inline-block;
     font-weight: 400;
     line-height: 1.5;
     color: #212529;
     text-align: center;
-    text-decoration: none;
     vertical-align: middle;
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
     background-color: #ffba08;
     border: 1px solid transparent;
-    padding: 0.175rem 0.5rem;
+    padding: 0.17rem 0.5rem;
     font-size: 1rem;
     border-radius: 0.25rem;
 }
 
+.btnCreate:disabled {
+    color: #fff;
+    background-color: #212529;
+    cursor: no-drop;
+}
+
 .form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    max-width: 800px;
-    width: 90%;
-    margin: auto;
-    padding: 40px;    
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
 }
 
 .formLabel {
     display: block;
-    font-weight: 300;
+    font-weight: 500;
     padding: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .divFInput {
@@ -73,14 +71,14 @@
 }
 
 .formInput {
-    width: 90%;
+    width: 80%;
     background: #fff;
     border: 1px solid #353535;
     border-radius: 10px;
     height: 45px;
     line-height: 45px;
-    padding: 0 40px 0 10px;
-    transition: .3s ease all;
+    padding: 0 20px 0 20px;
+    cursor: pointer;
 }
 
 .formInput:focus {
@@ -105,7 +103,7 @@
     color: #dc3545;
 }
 
-.inputError-ctive {
+.inputError-active {
     display: block;
 }
 
@@ -114,16 +112,29 @@
     flex-wrap: wrap;
     flex-direction: row;
     width: 50vw;
-    height: 50vh;
     margin-top: 10px;
 }
 
 .typeElement {
     display: flex;
-    margin-top: 9px;
-    height: 45px;
-    padding: 0 40px 0 10px;
-    transition: .3s ease all;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #95a6b1;
+    border: 2px solid #314d5f;
+    margin: 7px 10px;
+    padding: 5px 5px;
+    border-radius: 10px;
+}
+
+.btnDelete {
+    display: block;
+    color: white;
+    border: 1px solid #edeef1;
+    border-radius: 50%;
+    margin-left: 5px;
+    background-color: #314d5f;
+    cursor: pointer;
 }
 
 .butonChackRed {

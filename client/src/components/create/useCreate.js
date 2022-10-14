@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getTypes, postPokemon, clearFilter } from "../../redux/actions";
+import { getTypes, postPokemon, clearFilter, getAllPokemons} from "../../redux/actions";
 
 export const useCreate = (initialForm, validate) => {
 
@@ -17,6 +17,7 @@ export const useCreate = (initialForm, validate) => {
         ...form,
         [e.target.name]: e.target.value,
         });
+        setErrors(validate(form));
     };
 
     const handleError = (e) => {
@@ -56,10 +57,11 @@ export const useCreate = (initialForm, validate) => {
         if(!form.types.length){
             alert('Need to add at least one type of Pokemon')
         } else {
-            if (Object.keys(errors).length) {
+            if (Object.keys(errors).length < 1) {
                 dispatch(postPokemon(form))
                     .then((res) => {
-                    history.push('/home')
+                        history.push('/home')
+                        dispatch(getAllPokemons());
                 })
                 alert ("Your pokemon has been successfully created");
             } else {

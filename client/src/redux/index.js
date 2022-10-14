@@ -10,16 +10,3 @@ const store = createStore(
 );
 
 export default store;
-
-/*
-
-    REDUX = [
-        index === store: CONFIGURACIÓN DEL ESTADO DE REDUX,
-        {
-            action types => CONSTANTES DE TIPOS
-            actions      => MATCHEO CON LAS RUTAS DEL BACK
-            reducer      => MANEJO DEL ESTADO GLOBAL
-        }
-    ]
-
-*/

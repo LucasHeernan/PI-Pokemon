@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
-SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_FILTER, CLEAR_ALL } from '../actionTypes';
+SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_HOME } from '../actionTypes';
 
 export function getAllPokemons() {
     return async (dispatch) => {
@@ -33,7 +33,7 @@ export function getPokemonById(id) {
 export function postPokemon(pokemon) {
     return async (dispatch) => {
         try {
-            const data = await axios.post(`http://localhost:3001/pokemons`, pokemon)
+            const data = await axios.post(`http://localhost:3001/pokemons`, pokemon).then(e => e.data);
             return dispatch({
                 type: POST_POKEMON,
                 payload: data
@@ -79,16 +79,16 @@ export function getTypes() {
     }
 }
 
-export function clearFilter() {
-    return { type: CLEAR_FILTER, payload: [] }
-}
+// export function clearFilter() {
+//     return { type: CLEAR_FILTER, payload: [] }
+// }
 
 export function clearDetail() {
     return { type: CLEAR_DETAIL, payload: [] }
 }
 
-export function clearAll() {
-    return { type: CLEAR_ALL, payload: [] }
+export function clearHome() {
+    return { type: CLEAR_HOME, payload: [] }
 }
 
 export function orderByAttack(payload) {

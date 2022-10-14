@@ -8,5 +8,4 @@ export const SORT_BY_NAME = 'SORT_BY_NAME';
 export const SORT_BY_TYPE = 'SORT_BY_TYPE';
 export const SORT_BY_ORIGIN = 'SORT_BY_ORIGIN';
 export const CLEAR_DETAIL = 'CLEAR_DETAIL';
-export const CLEAR_FILTER = 'CLEAR_FILTER';
-export const CLEAR_ALL = 'CLEAR_ALL';
+export const CLEAR_HOME = 'CLEAR_HOME';

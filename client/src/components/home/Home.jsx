@@ -14,15 +14,13 @@ export default function Home() {
     const dispatch = useDispatch();
     const { all, pokemons, types } = useSelector(state => state);
 
-    //    ESTADOS PARA MOSTRAR 12 POKEMONS POR PÁGINA
-    const [currentPage, setCurrentPage] = useState(1); // EMPIEZO EN 1
+    /*     -----     PAGINADO     -----     */
+    const [currentPage, setCurrentPage] = useState(1);
     const [pokesPerPage, /* setPokesPerPage */] = useState(12);
 
-    //    INDICES DEL PRIMER Y ULTIMO POKEMON DE LA PÁGINA
     const lastPoke = currentPage * pokesPerPage;
     const firstPoke = lastPoke - pokesPerPage;
 
-    //    ARRAY DEL PAGINADO ACTUAL
     const currentPokes = all.slice(firstPoke, lastPoke);
     const currentFilters = pokemons.length > 0 ? pokemons.slice(firstPoke, lastPoke) : null;
 
@@ -40,8 +38,8 @@ export default function Home() {
 
     useEffect(() => {
         !types.length && dispatch(getTypes());
-        !all.length && dispatch(getAllPokemons());
-    }, [dispatch, types, all]);
+        dispatch(getAllPokemons());
+    }, [dispatch, types]);
 
     return (
         <div>
@@ -68,7 +66,7 @@ export default function Home() {
                     </div>
                     <div className={c.container}>
                         {
-                            /* pokemon lo uso para los filtrados */
+                            /* pokemons lo uso para los filtrados */
                             pokemons?.length > 0 ?
                             currentFilters.map(e =>
                                 <div key={e.id}>
@@ -82,7 +80,7 @@ export default function Home() {
                                 </div>
                             ) :
                             /* all lo voy a usar para el paginado */
-                            currentPokes?.map(e =>
+                            all.length > 2 && currentPokes?.map(e =>
                                 <div key={e.id}>
                                     <Pokemon
                                         name={e.name}
