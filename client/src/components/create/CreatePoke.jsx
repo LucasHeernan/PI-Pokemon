@@ -96,6 +96,7 @@ export default function CreatePoke () {
             ...input,
             types: input.types.filter(e => e !== type)
         })
+        setErrors(validate(input));
     }
 
     const handleSubmit = (e) => {
@@ -138,8 +139,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Name:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -157,8 +156,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Hp:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -178,8 +175,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Image URL:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -197,8 +192,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Height:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -218,8 +211,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Weight:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -239,8 +230,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Attack:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -260,8 +249,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Defense:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -281,8 +268,6 @@ export default function CreatePoke () {
                             <label className={c.formLabel}>Speed:</label>
                             <div className={c.divFInput}>
                                 <input
-                                    // onChange={(e) =>handleChange(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleChange}
                                     onBlur={handleErrors}
                                     className={c.formInput}
@@ -304,15 +289,12 @@ export default function CreatePoke () {
                                 <label className={c.formLabel}>Types: </label>
                                 <select
                                     className={c.formInput}
-                                    // onChange={(e) => handleType(e)}
-                                    // onBlur={(e) => handleErrors(e)}
                                     onChange={handleType}
-                                    onBlur={handleErrors}
                                 >
                                     <option>Select Type</option>
                                     {
                                         types?.map((e, i) => (
-                                            <option key={i} value={e.name}>{e.name}</option>
+                                            <option onClick={handleErrors} key={i} value={e.name}>{e.name}</option>
                                         ))
                                     }
                                 </select>
@@ -331,8 +313,7 @@ export default function CreatePoke () {
                                     <button
                                         className={c.btnDelete}
                                         type="reset"
-                                        onBlur={() => handleErrors(e)}
-                                        onClick={()=> handleDelete(e)}
+                                        onClick={() => handleDelete(e)}
                                     >X</button>
                                 </div>
                                 )}

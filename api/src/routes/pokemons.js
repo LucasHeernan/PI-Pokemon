@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const { Pokemons, Types } = require('../db');
-const { getApiPokemons, getApiPokemonById, getApiPokemonByName } = require('../controllers/getsApi');
+const { getApiPokemons, getApiPokemonById, getApiPokemonByName, getMorePokemons } = require('../controllers/getsApi');
 const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../controllers/getsDb');
 
 const router = Router();
 
 
 router.get('/', async (req, res, next) => {
-    const { name } = req.query;
+    const { name, lastPoke } = req.query;
     let result;
     if (name) {
         try {
@@ -16,6 +16,14 @@ router.get('/', async (req, res, next) => {
             return res.status(200).json(result)
         } catch (err) {
             res.status(200).send(`The pokemon ${name} has not been found`);
+            next(err);
+        }
+    } else if (lastPoke) {
+        try {
+            result = await getMorePokemons(lastPoke);
+            return res.status(200).json(result);
+        } catch (err) {
+            res.status(200).send(`Couldn't fetch more pokemons`);
             next(err);
         }
     } else {

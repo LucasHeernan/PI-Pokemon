@@ -1,12 +1,11 @@
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
-SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_HOME } from '../actionTypes';
+SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_HOME, GET_MORE_POKEMONS } from '../actionTypes';
 
 const initialState = {
     all: [],
     pokemons: [],
     detail: [],
-    types: [],
-    created: {}
+    types: []
 }
 
 const pokeReducer = ( state = initialState, action ) => {
@@ -41,11 +40,6 @@ const pokeReducer = ( state = initialState, action ) => {
                 ...state,
                 detail: action.payload
             }
-        // case CLEAR_FILTER:
-        //     return {
-        //         ...state,
-        //         pokemons: action.payload
-        //     }
         case CLEAR_HOME:
             return {
                 ...state,
@@ -101,8 +95,13 @@ const pokeReducer = ( state = initialState, action ) => {
                 ...state,
                 pokemons: typesFilter
             }
+        case GET_MORE_POKEMONS:
+            return {
+                ...state,
+                all: [...state.all, action.payload]
+            }
         default:
-            return { ...state };
+        return { ...state };
     }
 }
 

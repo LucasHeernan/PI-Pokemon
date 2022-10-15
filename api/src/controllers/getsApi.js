@@ -94,11 +94,38 @@ async function getApiTypes() {
         throw err;
     }
 }
-  
+
+async function getMorePokemons(lastPoke) {
+    try {
+        const api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=${lastPoke}&limit=40`).then(e => e.data);
+        const forty = [...api.results];
+        const pokeUrls = forty.map(e => e.url);
+        const pokeData = await Promise.all(pokeUrls.map(async (e) => (await axios(e)).data));
+        const pokemons = pokeData.map((p) => {
+            return {
+                id: p.id,
+                name: p.name,
+                hp: p.stats[0].base_stat,
+                attack: p.stats[1].base_stat,
+                defense: p.stats[2].base_stat,
+                speed: p.stats[5].base_stat,
+                height: p.height,
+                weight: p.weight,
+                types: p.types.map((t) => ({ name: t.type.name })),
+                img: p.sprites.other.dream_world.front_default,
+                imgId: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${p.id}.png`
+            };
+        });
+        return pokemons;
+    } catch (err) {
+        throw err;
+    }
+}
 
 module.exports = {
     getApiPokemons,
     getApiPokemonById,
     getApiPokemonByName,
-    getApiTypes
+    getApiTypes,
+    getMorePokemons
 }

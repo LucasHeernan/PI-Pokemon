@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GET_ALL_POKEMONS, GET_POKEMON_BY_ID, GET_POKEMON_BY_NAME, GET_TYPES, POST_POKEMON, 
-SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_HOME } from '../actionTypes';
+SORT_BY_ATTACK, SORT_BY_NAME, SORT_BY_ORIGIN, SORT_BY_TYPE, CLEAR_DETAIL, CLEAR_HOME, GET_MORE_POKEMONS } from '../actionTypes';
 
 export function getAllPokemons() {
     return async (dispatch) => {
@@ -79,9 +79,19 @@ export function getTypes() {
     }
 }
 
-// export function clearFilter() {
-//     return { type: CLEAR_FILTER, payload: [] }
-// }
+export function getMorePokemons(lastPoke) {
+    return async (dispatch) => {
+        try {
+            const data = await axios(`http://localhost:3001/pokemons?lastPoke=${lastPoke}`).then(e => e.data);
+            return dispatch({
+                type: GET_MORE_POKEMONS,
+                payload: data
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+}
 
 export function clearDetail() {
     return { type: CLEAR_DETAIL, payload: [] }

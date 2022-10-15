@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { orderByAttack, orderByName, orderByType, orderByOrigin } from "../../redux/actions";
-import c from "./Filter.module.css";
+import c from "./Filters.module.css";
 
 export default function Filters({ setCurrentPage }) {
 
@@ -56,7 +56,7 @@ export default function Filters({ setCurrentPage }) {
             onChange={e => handlerByType(e)}>
                 <option value='ALL'>All Types</option>
                 { types?.map((t, id) => {
-                    return  <option value={t.name} key={id}>{t.name}</option>;
+                    return <option value={t.name} key={id}>{t.name}</option>;
                 })}
             </select>
         </div>

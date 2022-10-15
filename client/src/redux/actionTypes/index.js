@@ -9,3 +9,4 @@ export const SORT_BY_TYPE = 'SORT_BY_TYPE';
 export const SORT_BY_ORIGIN = 'SORT_BY_ORIGIN';
 export const CLEAR_DETAIL = 'CLEAR_DETAIL';
 export const CLEAR_HOME = 'CLEAR_HOME';
+export const GET_MORE_POKEMONS = 'GET_MORE_POKEMONS';

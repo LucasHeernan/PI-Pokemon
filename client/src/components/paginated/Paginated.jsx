@@ -1,9 +1,11 @@
 import React from "react";
 import c from "./Paginated.module.css";
-import { useSelector } from "react-redux";
+import { useSelector/* , useDispatch  */} from "react-redux";
+// import { getMorePokemons } from "../../redux/actions";
 
 export default function Paginated({ pokesPerPage, paginated, handlePrev, handleNext, currentPage }) {
 
+    // const dispatch = useDispatch();
     const { all, pokemons } = useSelector(store => store);
 
     let pages = [];
@@ -18,6 +20,11 @@ export default function Paginated({ pokesPerPage, paginated, handlePrev, handleN
         pagesFilter.push(f+1)
     }
 
+    // function handlerMore(e) {
+    //     e.preventDefault();
+    //     dispatch(getMorePokemons(all.length));
+    // }
+
     return (
         <nav className={c.container}>
             <ul className={c.paginated}>
@@ -28,12 +35,17 @@ export default function Paginated({ pokesPerPage, paginated, handlePrev, handleN
                 </button>
                 {
                     pagesFilter.length >= 1 ? pagesFilter.map(f =>
-                        <p className={f === currentPage ? c.currentPage : c.list} onClick={()=>{paginated(f)}} key={f}>{f}</p>
+                        <p className={f === currentPage ? c.currentPage : c.list} onClick={() => {paginated(f)}} key={f}>{f}</p>
                     ) :
                     pages.map(n =>
-                        <p className={n === currentPage ? c.currentPage : c.list} onClick={()=>{paginated(n)}} key={n}>{n}</p>
+                        <p className={n === currentPage ? c.currentPage : c.list} onClick={() => {paginated(n)}} key={n}>{n}</p>
                     )
                 }
+                {/* <button
+                    disabled={true}
+                    className={c.currentPage}
+                    >+
+                </button> */}
                 <button
                     disabled={currentPage === Math.ceil(max) || currentPage === Math.ceil(maxFilter)}
                     className={c.btn}
