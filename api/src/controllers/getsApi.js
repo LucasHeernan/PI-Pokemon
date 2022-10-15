@@ -5,9 +5,8 @@ const { Types } = require('../db');
 // TRAER LOS POKEMONS EN https://pokeapi.co/api/v2/pokemon
 async function getApiPokemons() {
     try {
-        const api = await axios('https://pokeapi.co/api/v2/pokemon').then(e => e.data);
-        const apiNext = await axios(api.next);
-        const forty = [...api.results, ...apiNext.data.results];
+        const api = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40').then(e => e.data);
+        const forty = [...api.results];
         const pokeUrls = forty.map(e => e.url);
         const pokeData = await Promise.all(pokeUrls.map(async (e) => (await axios(e)).data));
         const pokemons = pokeData.map((p) => {
@@ -95,9 +94,9 @@ async function getApiTypes() {
     }
 }
 
-async function getMorePokemons(lastPoke) {
+async function getMorePokemons() {
     try {
-        const api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=${lastPoke}&limit=40`).then(e => e.data);
+        const api = await axios(`https://pokeapi.co/api/v2/pokemon?offset=40&limit=40`).then(e => e.data);
         const forty = [...api.results];
         const pokeUrls = forty.map(e => e.url);
         const pokeData = await Promise.all(pokeUrls.map(async (e) => (await axios(e)).data));

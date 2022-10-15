@@ -6,8 +6,29 @@ const { getPokemonsDb, getPokemonByIdDb, getPokemonByNameDb } = require('../cont
 const router = Router();
 
 
+router.get('/getMorePokemons', async (req, res, next) => {
+    try {
+        let all;
+        let result = await getApiPokemons();
+        let pokemonDb = await getPokemonsDb();
+        let more = await getMorePokemons();
+        if ( pokemonDb.length > 0 ) {
+            all = [...result, ...pokemonDb, ...more];
+            return res.status(200).json(all);
+        } else {
+            all = [...result, ...more];
+            return res.status(200).json(all);
+        }
+        // let result = await getMorePokemons();
+        // res.status(200).json(result)
+    } catch (err) {
+        res.status(200).send(`Couldn't fetch more items`);
+        next(err);
+    }
+});
+
 router.get('/', async (req, res, next) => {
-    const { name, lastPoke } = req.query;
+    const { name } = req.query;
     let result;
     if (name) {
         try {
@@ -16,14 +37,6 @@ router.get('/', async (req, res, next) => {
             return res.status(200).json(result)
         } catch (err) {
             res.status(200).send(`The pokemon ${name} has not been found`);
-            next(err);
-        }
-    } else if (lastPoke) {
-        try {
-            result = await getMorePokemons(lastPoke);
-            return res.status(200).json(result);
-        } catch (err) {
-            res.status(200).send(`Couldn't fetch more pokemons`);
             next(err);
         }
     } else {

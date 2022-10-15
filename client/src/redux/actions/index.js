@@ -79,10 +79,10 @@ export function getTypes() {
     }
 }
 
-export function getMorePokemons(lastPoke) {
+export function getMorePokemons() {
     return async (dispatch) => {
         try {
-            const data = await axios(`http://localhost:3001/pokemons?lastPoke=${lastPoke}`).then(e => e.data);
+            const data = await axios(`http://localhost:3001/pokemons/getMorePokemons`).then(e => e.data);
             return dispatch({
                 type: GET_MORE_POKEMONS,
                 payload: data

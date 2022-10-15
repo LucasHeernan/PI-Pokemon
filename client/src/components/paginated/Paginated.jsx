@@ -1,6 +1,6 @@
 import React from "react";
 import c from "./Paginated.module.css";
-import { useSelector/* , useDispatch  */} from "react-redux";
+import { useSelector/* , useDispatch */ } from "react-redux";
 // import { getMorePokemons } from "../../redux/actions";
 
 export default function Paginated({ pokesPerPage, paginated, handlePrev, handleNext, currentPage }) {
@@ -20,9 +20,9 @@ export default function Paginated({ pokesPerPage, paginated, handlePrev, handleN
         pagesFilter.push(f+1)
     }
 
-    // function handlerMore(e) {
+    // function handleMore(e) {
     //     e.preventDefault();
-    //     dispatch(getMorePokemons(all.length));
+    //     dispatch(getMorePokemons());
     // }
 
     return (
@@ -42,8 +42,9 @@ export default function Paginated({ pokesPerPage, paginated, handlePrev, handleN
                     )
                 }
                 {/* <button
-                    disabled={true}
+                    // disabled={true}
                     className={c.currentPage}
+                    // onClick={(e) => handleMore(e)}
                     >+
                 </button> */}
                 <button

@@ -98,7 +98,7 @@ const pokeReducer = ( state = initialState, action ) => {
         case GET_MORE_POKEMONS:
             return {
                 ...state,
-                all: [...state.all, action.payload]
+                all: action.payload
             }
         default:
         return { ...state };
