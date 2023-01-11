@@ -11,11 +11,15 @@ export default function Pokemon({ name, imgId, img, types, id }) {
                 {
                     id.toString().length < 5 ?
                     <div>
-                        <img className={c.img} src={imgId} alt="pokemon"/>
+                        <Link to={`home/${name}`}>
+                            <img className={c.img} src={imgId} alt="pokemon"/>
+                        </Link>
                         <span className={c.id}>{id}</span>
                     </div>  :
                     <div>
-                        <img className={c.img} src={img ? img : defaultImg } alt="pokemon"/>
+                        <Link to={`home/${name}`}>
+                            <img className={c.img} src={img ? img : defaultImg } alt="pokemon"/>
+                        </Link>
                         <span className={c.id}>{id = 'DB'}</span>
                     </div>
                 }
