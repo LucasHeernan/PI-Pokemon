@@ -56,9 +56,7 @@ export function getPokemonByName(name) {
             dispatch({
                 type: GET_POKEMON_BY_NAME,
                 payload: {
-                    err: 'NO SE ENCONTRO NINGÚN POKEMON CON ESE NOMBRE',
-                    img: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/4.svg",
-                    imgId: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png"
+                    err: 'NO SE ENCONTRO NINGÚN POKEMON CON ESE NOMBRE'
                 }
             });
         }
