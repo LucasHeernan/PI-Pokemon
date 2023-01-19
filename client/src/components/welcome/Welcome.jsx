@@ -18,9 +18,9 @@ export default function Welcome() {
             <h1 className={c.title}>Welcome to Pokemon App</h1>
             { types?.length ?
                 <Link to='/home'>
-                    <div className={c.link}>
-                        <button className={c.btnGeneral}>Click here</button>
-                    </div>
+                    {/* <div className={c.link}> */}
+                        <div className={c.btnGeneral}></div>
+                    {/* </div> */}
                 </Link> :
                 null
             }
